@@ -1,0 +1,2826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask Haviv Anything — Episode Map</title>
+    <style>
+        :root {
+            --bg: #070b16;
+            --panel: rgba(13, 20, 35, 0.88);
+            --panel-2: rgba(22, 33, 54, 0.94);
+            --panel-3: rgba(29, 43, 68, 0.96);
+            --text: #eef6ff;
+            --muted: #93a4ba;
+            --faint: #5e718b;
+            --accent: #38bdf8;
+            --accent-2: #f59e0b;
+            --border: rgba(148, 163, 184, 0.22);
+            --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+        }
+
+        * { box-sizing: border-box; }
+        html, body { height: 100%; }
+        body {
+            margin: 0;
+            overflow: hidden;
+            color: var(--text);
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background:
+                radial-gradient(circle at 18% 12%, rgba(56, 189, 248, 0.18), transparent 26rem),
+                radial-gradient(circle at 86% 82%, rgba(245, 158, 11, 0.13), transparent 28rem),
+                linear-gradient(140deg, #070b16 0%, #101827 52%, #070b16 100%);
+        }
+
+        button, input {
+            font: inherit;
+        }
+
+        button {
+            border: 1px solid var(--border);
+            color: var(--text);
+            background: var(--panel-2);
+            border-radius: 999px;
+            padding: 10px 14px;
+            cursor: pointer;
+        }
+
+        button:hover { border-color: rgba(56, 189, 248, 0.62); }
+
+        input {
+            width: 100%;
+            border: 1px solid var(--border);
+            color: var(--text);
+            background: rgba(8, 13, 24, 0.78);
+            border-radius: 999px;
+            padding: 13px 16px;
+            outline: none;
+        }
+
+        input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.14); }
+
+        a { color: var(--accent); text-decoration: none; }
+        p { margin: 0; color: var(--muted); line-height: 1.45; }
+
+        .app-shell {
+            display: grid;
+            grid-template-columns: 360px minmax(0, 1fr) 420px;
+            height: 100vh;
+            min-height: 640px;
+        }
+
+        .left-rail,
+        .detail-panel {
+            position: relative;
+            z-index: 4;
+            min-height: 0;
+            overflow: auto;
+            background: var(--panel);
+            backdrop-filter: blur(18px);
+            border-color: var(--border);
+        }
+
+        .left-rail {
+            border-right: 1px solid var(--border);
+            padding: 22px;
+        }
+
+        .detail-panel {
+            border-left: 1px solid var(--border);
+            padding: 22px;
+        }
+
+        .brand-eyebrow {
+            color: var(--accent);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        h1, h2, h3 {
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        h1 {
+            margin-top: 8px;
+            font-size: clamp(2rem, 5vw, 3.7rem);
+            letter-spacing: -0.05em;
+        }
+
+        h2 { font-size: 1.02rem; }
+        h3 { font-size: 0.98rem; }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            padding: 13px;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .stat-card strong {
+            display: block;
+            font-size: 1.35rem;
+            letter-spacing: -0.03em;
+        }
+
+        .stat-card span {
+            color: var(--muted);
+            font-size: 0.78rem;
+        }
+
+        .section {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .section-header h2 {
+            color: var(--text);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .trail-grid,
+        .category-list,
+        .result-list {
+            display: grid;
+            gap: 9px;
+        }
+
+        .trail-button,
+        .category-button,
+        .result-card {
+            width: 100%;
+            text-align: left;
+            border-radius: 18px;
+            padding: 13px;
+            background: rgba(255, 255, 255, 0.045);
+        }
+
+        .trail-button strong,
+        .result-card strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .trail-button span,
+        .category-button span,
+        .result-card span,
+        .micro {
+            display: block;
+            color: var(--muted);
+            font-size: 0.82rem;
+            line-height: 1.35;
+        }
+
+        .category-button {
+            display: grid;
+            grid-template-columns: 12px minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .category-button-title {
+            min-width: 0;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+
+        .category-button-title strong {
+            white-space: normal;
+            color: #eaf4ff;
+            font-weight: 700;
+            font-size: 0.875rem;
+            letter-spacing: -0.02em;
+            line-height: 1.35;
+        }
+
+        .category-button.active {
+            border-color: var(--accent);
+            background: rgba(56, 189, 248, 0.12);
+        }
+
+        .swatch {
+            width: 11px;
+            height: 11px;
+            border-radius: 999px;
+            background: var(--accent);
+            box-shadow: 0 0 18px currentColor;
+        }
+
+        .count-pill,
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            width: fit-content;
+            padding: 4px 9px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            color: var(--muted);
+            font-size: 0.75rem;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 9px;
+            margin-top: 12px;
+        }
+
+        .map-stage {
+            position: relative;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .map-topbar {
+            position: absolute;
+            z-index: 3;
+            top: 18px;
+            left: 18px;
+            right: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            pointer-events: none;
+        }
+
+        .glass {
+            pointer-events: auto;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: rgba(8, 13, 24, 0.66);
+            backdrop-filter: blur(16px);
+            box-shadow: var(--shadow);
+            padding: 12px 14px;
+        }
+
+        .map-title {
+            max-width: 560px;
+        }
+
+        .map-title strong {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.95rem;
+        }
+
+        .map-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .map-actions-primary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            margin-right: auto;
+        }
+
+        .map-view-toggle {
+            display: inline-flex;
+            border-radius: 999px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .timeline-map-tools {
+            display: inline-flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .timeline-map-tools[hidden] {
+            display: none !important;
+        }
+
+        .timeline-tool-btn {
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            padding: 8px 13px;
+            font-size: 0.76rem;
+            font-weight: 600;
+            color: var(--muted);
+            background: rgba(255, 255, 255, 0.04);
+            cursor: pointer;
+        }
+
+        .timeline-tool-btn:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .timeline-tool-btn.active {
+            color: var(--text);
+            border-color: rgba(245, 158, 11, 0.55);
+            background: rgba(245, 158, 11, 0.14);
+        }
+
+        .map-view-btn {
+            border: none;
+            border-radius: 0;
+            padding: 8px 13px;
+            font-size: 0.76rem;
+            font-weight: 600;
+            color: var(--muted);
+            background: rgba(255, 255, 255, 0.04);
+            cursor: pointer;
+        }
+
+        .map-view-btn:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .map-view-btn.active {
+            color: var(--text);
+            background: rgba(56, 189, 248, 0.22);
+        }
+
+        a.map-view-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: var(--muted);
+        }
+
+        a.map-view-btn:hover {
+            color: var(--text);
+        }
+
+        .map-actions-tools {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .map-tool-link {
+            display: inline-flex;
+            align-items: center;
+            border: 1px solid var(--border);
+            color: var(--text);
+            background: rgba(22, 33, 54, 0.94);
+            border-radius: 999px;
+            padding: 8px 13px;
+            font-size: 0.76rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .map-tool-link:hover {
+            border-color: rgba(56, 189, 248, 0.55);
+        }
+
+        /* Timeline rail typography — also set inline on <text> so it always applies inside SVG. */
+        .timeline-band-label {
+            fill: #ffffff;
+            font-size: 38px;
+            font-weight: 800;
+            font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+            letter-spacing: -0.03em;
+            pointer-events: none;
+            paint-order: stroke fill;
+            stroke: #050816;
+            stroke-width: 4px;
+            stroke-linejoin: round;
+        }
+
+        .timeline-band-label-group {
+            cursor: pointer;
+        }
+
+        .timeline-band-label-group:hover .timeline-band-label-hit {
+            fill: rgba(56, 189, 248, 0.12);
+        }
+
+        .timeline-band-label-hit {
+            fill: rgba(0, 0, 0, 0);
+            stroke: none;
+            pointer-events: all;
+        }
+
+        .timeline-tick-label {
+            fill: #ffffff;
+            font-size: 68px;
+            font-weight: 800;
+            font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+            letter-spacing: 0.03em;
+            pointer-events: none;
+            paint-order: stroke fill;
+            stroke: #050816;
+            stroke-width: 6.5px;
+            stroke-linejoin: round;
+        }
+
+        .timeline-axis-title {
+            fill: #dff1ff;
+            font-size: 26px;
+            font-weight: 800;
+            font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            pointer-events: none;
+            paint-order: stroke fill;
+            stroke: #050816;
+            stroke-width: 2.5px;
+            stroke-linejoin: round;
+        }
+
+        /* Large lane watermark behind episode dots (grid layer); stays readable when the map is zoomed out. */
+        .timeline-band-watermark {
+            fill: rgba(255, 255, 255, 0.28);
+            font-weight: 700;
+            font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+            letter-spacing: 0.04em;
+            pointer-events: none;
+            paint-order: stroke fill;
+            stroke: rgba(5, 8, 22, 0.55);
+            stroke-width: 2.5px;
+            stroke-linejoin: round;
+        }
+
+        #map-svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+            cursor: grab;
+            touch-action: none;
+        }
+
+        #map-svg.dragging { cursor: grabbing; }
+
+        #map-svg.zoom-region-mode {
+            cursor: crosshair !important;
+        }
+
+        .map-marquee-layer {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .map-lane-controls {
+            position: absolute;
+            z-index: 3;
+            left: 18px;
+            top: 106px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: auto;
+        }
+
+        .map-lane-controls[hidden] {
+            display: none !important;
+        }
+
+        .map-lane-toggle {
+            display: inline-flex;
+            border-radius: 999px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            width: fit-content;
+            backdrop-filter: blur(16px);
+            background: rgba(8, 13, 24, 0.66);
+            box-shadow: var(--shadow);
+        }
+
+        .map-lane-btn {
+            border: none;
+            border-radius: 0;
+            padding: 8px 13px;
+            font-size: 0.74rem;
+            font-weight: 600;
+            color: var(--muted);
+            background: rgba(255, 255, 255, 0.04);
+            cursor: pointer;
+        }
+
+        .map-lane-btn:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .map-lane-btn.active {
+            color: var(--text);
+            background: rgba(56, 189, 248, 0.22);
+        }
+
+        .map-marquee-rect {
+            display: none;
+            position: absolute;
+            box-sizing: border-box;
+            border: 2px solid rgba(255, 255, 255, 0.88);
+            border-radius: 6px;
+            background: rgba(56, 189, 248, 0.14);
+            box-shadow: 0 0 0 1px rgba(5, 10, 20, 0.55), 0 12px 40px rgba(0, 0, 0, 0.35);
+            pointer-events: none;
+        }
+
+        .map-marquee-rect.visible {
+            display: block;
+        }
+
+        .era-label {
+            fill: rgba(238, 246, 255, 0.28);
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+        }
+
+        .cluster-label {
+            fill: #e9f4ff;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+            paint-order: stroke fill;
+            stroke: rgba(5, 9, 20, 0.72);
+            stroke-width: 1.85px;
+            stroke-linejoin: round;
+            pointer-events: none;
+        }
+
+        .cluster-label-group {
+            cursor: pointer;
+        }
+
+        .cluster-card-bg {
+            stroke: rgba(210, 235, 255, 0.34);
+            stroke-width: 1.5;
+            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.22));
+        }
+
+        .cluster-card-title {
+            fill: #f4f9ff;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            pointer-events: none;
+        }
+
+        .cluster-card-count {
+            fill: rgba(237, 246, 255, 0.9);
+            font-size: 11px;
+            font-weight: 700;
+            pointer-events: none;
+        }
+
+        .cluster-label-group.active .cluster-card-bg {
+            stroke: rgba(148, 234, 255, 0.95);
+            stroke-width: 2.2;
+        }
+
+        .cluster-label-group.search-roadmap-lane .cluster-card-bg {
+            stroke: rgba(245, 158, 11, 0.72);
+            stroke-width: 2.2;
+        }
+
+        .timeline-band-label-group.active .cluster-card-bg {
+            stroke: rgba(148, 234, 255, 0.95);
+            stroke-width: 2.2;
+        }
+
+        .timeline-band-label-group.search-roadmap-lane .cluster-card-bg {
+            stroke: rgba(245, 158, 11, 0.72);
+            stroke-width: 2.2;
+        }
+
+        .cluster-label-group:hover .cluster-label-hit {
+            fill: rgba(56, 189, 248, 0.12);
+        }
+
+        .cluster-label-hit {
+            fill: rgba(0, 0, 0, 0);
+            stroke: none;
+            pointer-events: all;
+        }
+
+        .cluster-spine {
+            stroke-linecap: round;
+            stroke-dasharray: 4 14;
+        }
+
+        .node-ring {
+            fill: rgba(255, 255, 255, 0.04);
+            stroke: rgba(255, 255, 255, 0.1);
+            stroke-width: 1.4;
+        }
+
+        .episode-node {
+            cursor: pointer;
+            transition: opacity 120ms ease;
+        }
+
+        .episode-node.dimmed { opacity: 0.16; }
+        .episode-node.hidden { display: none; }
+
+        .episode-node .node-core {
+            stroke: rgba(255, 255, 255, 0.8);
+            stroke-width: 1.4;
+        }
+
+        .episode-node.search-hit .node-core {
+            stroke: #fff7d6;
+            stroke-width: 3;
+            filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.95));
+        }
+
+        .episode-node.selected .node-core {
+            stroke: #ffffff;
+            stroke-width: 4;
+            filter: drop-shadow(0 0 18px rgba(56, 189, 248, 0.9));
+        }
+
+        .episode-node.role-primary .node-core { fill-opacity: 1; }
+        .episode-node.role-secondary .node-core { fill-opacity: 0.58; }
+        .episode-node.role-tertiary .node-core { fill-opacity: 0.32; }
+        .episode-node.role-primary .node-ring { stroke: rgba(255, 255, 255, 0.48); }
+        .episode-node.role-secondary .node-ring { stroke: rgba(255, 255, 255, 0.3); }
+        .episode-node.role-tertiary .node-ring { stroke: rgba(255, 255, 255, 0.2); }
+
+        .node-role-badge {
+            pointer-events: none;
+        }
+
+        .node-role-badge-bg {
+            fill: rgba(8, 13, 24, 0.9);
+            stroke: rgba(255, 255, 255, 0.72);
+            stroke-width: 1.2;
+        }
+
+        .node-role-badge-text {
+            fill: #f8fcff;
+            font-size: 9px;
+            font-weight: 800;
+            text-anchor: middle;
+            dominant-baseline: central;
+            letter-spacing: 0.02em;
+        }
+
+        .episode-label {
+            fill: rgba(238, 246, 255, 0.68);
+            font-size: 11px;
+            pointer-events: none;
+        }
+
+        .episode-label-num {
+            fill: #9ae6ff;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            pointer-events: none;
+            paint-order: stroke fill;
+            stroke: rgba(5, 9, 20, 0.62);
+            stroke-width: 1.35px;
+            stroke-linejoin: round;
+        }
+
+        .episode-label-title {
+            fill: #f6faff;
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1.22;
+            pointer-events: none;
+            paint-order: stroke fill;
+            stroke: rgba(5, 9, 20, 0.52);
+            stroke-width: 1.35px;
+            stroke-linejoin: round;
+        }
+
+        .trail-path {
+            fill: none;
+            stroke: rgba(245, 158, 11, 0.9);
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            filter: drop-shadow(0 0 14px rgba(245, 158, 11, 0.85));
+            stroke-dasharray: 11 11;
+        }
+
+        .trail-badge-bg {
+            fill: rgba(245, 158, 11, 0.96);
+            stroke: rgba(255, 255, 255, 0.92);
+            stroke-width: 2;
+        }
+
+        .trail-badge-text {
+            fill: #0f172a;
+            font-size: 11px;
+            font-weight: 800;
+            pointer-events: none;
+            text-anchor: middle;
+            dominant-baseline: central;
+        }
+
+        .tooltip {
+            position: fixed;
+            z-index: 10;
+            max-width: 320px;
+            pointer-events: none;
+            padding: 13px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: rgba(5, 10, 20, 0.93);
+            box-shadow: var(--shadow);
+            display: none;
+        }
+
+        .tooltip strong { display: block; margin-bottom: 6px; }
+        .tooltip ul { margin: 9px 0 0; padding-left: 18px; color: var(--muted); }
+        .tooltip li { margin: 3px 0; }
+
+        .detail-empty {
+            display: grid;
+            min-height: 70vh;
+            place-items: center;
+            text-align: center;
+        }
+
+        .detail-empty div {
+            max-width: 280px;
+        }
+
+        .detail-panel.open .detail-empty { display: none; }
+        .detail-content { display: none; }
+        .detail-panel.open .detail-content { display: block; }
+
+        .detail-kicker {
+            margin: 0 0 9px;
+            color: var(--accent);
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .detail-title {
+            margin-bottom: 10px;
+            font-size: 1.28rem;
+            letter-spacing: -0.025em;
+        }
+
+        .detail-meta {
+            color: var(--muted);
+            font-size: 0.86rem;
+            line-height: 1.4;
+            margin-bottom: 14px;
+        }
+
+        .video-frame {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            background: #000;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+
+        .video-frame iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .summary-box,
+        .transcript-box,
+        .moment-card {
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.045);
+            padding: 14px;
+            margin-top: 12px;
+        }
+
+        .detail-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .ghost-button {
+            border-radius: 12px;
+            padding: 7px 11px;
+            font-size: 0.8rem;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .trail-overview {
+            display: grid;
+            gap: 12px;
+        }
+
+        .overview-card {
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 12px;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .overview-card:hover {
+            border-color: rgba(56, 189, 248, 0.62);
+            background: rgba(56, 189, 248, 0.08);
+        }
+
+        .overview-card.role-primary { background: rgba(56, 189, 248, 0.08); }
+        .overview-card.role-secondary { background: rgba(56, 189, 248, 0.055); }
+        .overview-card.role-tertiary { background: rgba(56, 189, 248, 0.03); }
+
+        .role-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 22px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(210, 230, 255, 0.35);
+            font-size: 0.68rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .overview-thumb {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            margin-bottom: 10px;
+            background: rgba(8, 13, 24, 0.8);
+        }
+
+        .overview-themes {
+            margin: 8px 0 0;
+            padding-left: 18px;
+            color: #d9ebff;
+            font-size: 0.84rem;
+            line-height: 1.35;
+        }
+
+        .snap-notes-box {
+            border-color: rgba(56, 189, 248, 0.6);
+            background: linear-gradient(160deg, rgba(56, 189, 248, 0.18), rgba(255, 255, 255, 0.06));
+            box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.14), 0 16px 36px rgba(5, 10, 20, 0.42);
+        }
+
+        .snap-notes-box h3 {
+            color: #e8f7ff;
+        }
+
+        .snap-notes-box .micro {
+            color: #b9e7ff;
+        }
+
+        .theme-list {
+            margin: 12px 0 0;
+            padding-left: 18px;
+            color: var(--muted);
+        }
+
+        .transcript-box {
+            max-height: 360px;
+            overflow: auto;
+        }
+
+        .transcript-line {
+            display: grid;
+            grid-template-columns: 58px 1fr;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+            color: #d9e5f2;
+            font-size: 0.9rem;
+            line-height: 1.45;
+        }
+
+        .transcript-line:last-child { border-bottom: 0; }
+        .timecode { color: var(--accent); font-size: 0.78rem; }
+
+        .drawer-toggle {
+            display: none;
+            position: fixed;
+            z-index: 9;
+            right: 18px;
+            bottom: 18px;
+        }
+
+        @media (max-width: 1180px) {
+            .app-shell { grid-template-columns: 330px minmax(0, 1fr); }
+            .detail-panel {
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                width: min(440px, 92vw);
+                transform: translateX(100%);
+                transition: transform 180ms ease;
+            }
+            .detail-panel.open { transform: translateX(0); }
+            .drawer-toggle { display: inline-flex; }
+        }
+
+        @media (max-width: 840px) {
+            body { overflow: auto; }
+            .app-shell {
+                display: block;
+                height: auto;
+                min-height: 100vh;
+            }
+            .left-rail {
+                position: relative;
+                border-right: 0;
+                border-bottom: 1px solid var(--border);
+            }
+            .map-stage { height: 70vh; min-height: 540px; }
+            .map-topbar {
+                align-items: stretch;
+                flex-direction: column;
+            }
+            .detail-panel {
+                position: relative;
+                width: auto;
+                transform: none;
+                border-left: 0;
+                border-top: 1px solid var(--border);
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="app-shell">
+        <aside class="left-rail">
+            <div class="brand-eyebrow">Ask Haviv Anything</div>
+            <h1>Episode Map</h1>
+            <p style="margin-top:12px;">Browse the corpus by category and date. Click a category card to open its trail; use Find Episode to jump to a title.</p>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <strong id="stat-episode-count">—</strong>
+                    <span>indexed episodes</span>
+                </div>
+                <div class="stat-card">
+                    <strong id="stat-category-count">—</strong>
+                    <span>categories</span>
+                </div>
+            </div>
+
+            <section class="section">
+                <div class="section-header">
+                    <h2>Find Episode</h2>
+                    <span class="chip">by title</span>
+                </div>
+                <p class="micro">Looks for your text inside the episode title (number, guest, keyword). This does not search inside conversations.</p>
+                <div class="search-form">
+                    <input id="episode-search-query" type="text" placeholder="126, Micah Goodman, Iran, hostage">
+                    <button id="episode-search-button">Find</button>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="section-header">
+                    <h2>Current Trail</h2>
+                    <span class="chip" id="result-count">0 results</span>
+                </div>
+                <div class="result-list" id="search-results">
+                    <p class="micro">Find an episode by title, or click a category on the map.</p>
+                </div>
+            </section>
+
+        </aside>
+
+        <section class="map-stage" aria-label="Episode map">
+            <div class="map-topbar">
+                <div class="glass map-title">
+                    <strong id="map-heading">God's Eye View</strong>
+                    <p id="map-subtitle" class="micro">Episodes are laid out by category and chronology. Scroll to zoom, drag to pan, hover for a snap tooltip, click to deep dive.</p>
+                </div>
+                <div class="glass map-actions">
+                    <div class="map-actions-primary">
+                        <div class="map-view-toggle" role="group" aria-label="Map visualization and category tiles">
+                            <button type="button" id="map-view-columns" class="map-view-btn active">Podcast Eps Overview!</button>
+                            <button type="button" id="map-view-timeline" class="map-view-btn">Time × categories</button>
+                        </div>
+                        <div id="timeline-map-tools" class="timeline-map-tools" hidden>
+                            <button type="button" id="timeline-labels-toggle" class="timeline-tool-btn active" title="Show or hide episode labels on the timeline map">Labels on</button>
+                            <button type="button" id="timeline-zoom-region-toggle" class="timeline-tool-btn" title="Drag on the map to zoom into a time/category rectangle">Zoom region</button>
+                        </div>
+                    </div>
+                    <div class="map-actions-tools">
+                        <button id="zoom-in-button">Zoom in</button>
+                        <button id="zoom-out-button">Zoom out</button>
+                        <button id="reset-map-button">Reset map</button>
+                    </div>
+                </div>
+            </div>
+            <div id="map-lane-controls" class="map-lane-controls">
+                <div class="map-lane-toggle" role="group" aria-label="Trail visibility controls">
+                    <button type="button" id="show-all-trails-button" class="map-lane-btn">Show all trails</button>
+                    <button type="button" id="collapse-all-trails-button" class="map-lane-btn active">Collapse all trails</button>
+                </div>
+                <div class="map-lane-toggle" role="group" aria-label="Category membership controls">
+                    <button type="button" id="show-primary-only-button" class="map-lane-btn active">Show only primary</button>
+                    <button type="button" id="show-all-category-episodes-button" class="map-lane-btn">Show all eps with category</button>
+                </div>
+            </div>
+            <svg id="map-svg" role="img" aria-label="Interactive episode map">
+                <defs>
+                    <radialGradient id="nodeGloss">
+                        <stop offset="0%" stop-color="rgba(255,255,255,0.75)" />
+                        <stop offset="100%" stop-color="rgba(255,255,255,0)" />
+                    </radialGradient>
+                    <marker
+                        id="trail-arrowhead"
+                        viewBox="0 0 12 12"
+                        refX="10"
+                        refY="6"
+                        markerWidth="11"
+                        markerHeight="11"
+                        orient="auto"
+                        markerUnits="strokeWidth"
+                    >
+                        <path d="M 1 1 L 11 6 L 1 11 Z" fill="rgba(245, 158, 11, 0.98)" stroke="rgba(255, 247, 214, 0.95)" stroke-width="1" stroke-linejoin="round" />
+                    </marker>
+                </defs>
+                <g id="viewport">
+                    <g id="grid-layer"></g>
+                    <g id="trail-layer"></g>
+                    <g id="node-layer"></g>
+                </g>
+            </svg>
+            <div class="map-marquee-layer" aria-hidden="true">
+                <div id="map-marquee-rect" class="map-marquee-rect"></div>
+            </div>
+            <div class="tooltip" id="tooltip"></div>
+        </section>
+
+        <aside class="detail-panel" id="detail-panel">
+            <div class="detail-empty">
+                <div>
+                    <div class="brand-eyebrow">Deep dive</div>
+                    <h2 style="margin-top:8px;">Click any node</h2>
+                    <p style="margin-top:10px;">The episode opens here with video, themes, and summary — without leaving the map.</p>
+                </div>
+            </div>
+            <div class="detail-content" id="detail-content"></div>
+        </aside>
+    </main>
+
+    <button class="drawer-toggle" id="close-detail-button">Close detail</button>
+
+    <script>
+        const ALL_CATEGORIES_ID = "__all__";
+        const SVG_NS = "http://www.w3.org/2000/svg";
+        const MAP_SCALE_MIN = 0.28;
+        const MAP_SCALE_MAX = 5.5;
+        const MAP_VIEW_COLUMNS = "columns";
+        const MAP_VIEW_TIMELINE = "timeline";
+        const CATEGORY_MEMBERSHIP_PRIMARY = "primary";
+        const CATEGORY_MEMBERSHIP_ALL = "all";
+        const palette = ["#38bdf8", "#f59e0b", "#a78bfa", "#34d399", "#fb7185", "#facc15", "#22d3ee", "#c084fc", "#f97316", "#84cc16", "#94a3b8"];
+
+        const state = {
+            categories: [],
+            taxonomyEmpty: true,
+            episodes: [],
+            episodeById: new Map(),
+            layout: new Map(),
+            selectedCategoryId: ALL_CATEGORIES_ID,
+            selectedEpisodeId: "",
+            searchEpisodeIds: [],
+            searchResults: [],
+            searchKind: "",
+            activeQuery: "",
+            mapViewMode: MAP_VIEW_COLUMNS,
+            mapTrailsExpanded: false,
+            /** Categories touched by current search hits — lanes stay visible when trails are collapsed (main map). */
+            searchTrailCategoryIds: null,
+            categoryMembershipMode: CATEGORY_MEMBERSHIP_PRIMARY,
+            timelineShowLabels: true,
+            timelineZoomRegionMode: false,
+            /** When set, timeline x-axis uses this publish-date window (ms) so a marquee drill-in spreads episodes. */
+            timelineFocusRange: null,
+            /** Last timeline layout min/max time and plot geometry (for marquee → time mapping). */
+            timelineLayoutMeta: null,
+            /** When set, the right panel shows this primary-category episode list (timeline rail click). */
+            categoryBrowseId: null,
+            /** Layout key per episode/category lane for map-node rendering. */
+            nodeMetaByKey: new Map(),
+            primaryLayoutKeyByEpisode: new Map(),
+            marqueeDrag: null,
+            ignoreNextMapStageClick: false,
+            scale: 1,
+            tx: 0,
+            ty: 0,
+            dragging: false,
+            dragStart: null,
+        };
+
+        function escapeHtml(value) {
+            return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                "\"": "&quot;",
+                "'": "&#039;",
+            }[char]));
+        }
+
+        function formatPublishDate(value) {
+            if (!value) return "Unknown date";
+            const digits = String(value).replace(/\D/g, "");
+            if (digits.length >= 8) return `${digits.slice(0, 4)}-${digits.slice(4, 6)}-${digits.slice(6, 8)}`;
+            return value;
+        }
+
+        /** UTC milliseconds from catalog publish_date (digits or ISO); null if unknown. */
+        function publishDateToMs(value) {
+            const digits = String(value || "").replace(/\D/g, "");
+            if (digits.length >= 8) {
+                const y = parseInt(digits.slice(0, 4), 10);
+                const m = parseInt(digits.slice(4, 6), 10) - 1;
+                const d = parseInt(digits.slice(6, 8), 10);
+                const t = Date.UTC(y, m, d);
+                return Number.isFinite(t) ? t : null;
+            }
+            const parsed = Date.parse(String(value || ""));
+            return Number.isFinite(parsed) ? parsed : null;
+        }
+
+        function formatTimelineTick(ms, rangeMs = null) {
+            const d = new Date(ms);
+            if (!Number.isFinite(d.getTime())) return "";
+            const yyyyMm = `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}`;
+            if (rangeMs != null && rangeMs <= 86400000 * 120) {
+                return `${yyyyMm}-${String(d.getUTCDate()).padStart(2, "0")}`;
+            }
+            return yyyyMm;
+        }
+
+        function normalizedTimelineFocusRange() {
+            const fr = state.timelineFocusRange;
+            if (!fr || !Number.isFinite(fr.minT) || !Number.isFinite(fr.maxT)) return null;
+            return {
+                minT: Math.min(fr.minT, fr.maxT),
+                maxT: Math.max(fr.minT, fr.maxT),
+            };
+        }
+
+        function episodeInTimelineFocus(episode) {
+            const fr = normalizedTimelineFocusRange();
+            if (!fr) return true;
+            const t = publishDateToMs(episode.publish_date);
+            return t != null && t >= fr.minT && t <= fr.maxT;
+        }
+
+        function normalizedCategoryIds(episode) {
+            const raw = episode.category_ids;
+            if (Array.isArray(raw) && raw.length) return raw.map(String);
+            if (episode.category_id) return [String(episode.category_id)];
+            return ["uncategorized"];
+        }
+
+        function primaryCategoryId(episode) {
+            return normalizedCategoryIds(episode)[0] || "uncategorized";
+        }
+
+        function categoryMembershipRank(episode, categoryId) {
+            return normalizedCategoryIds(episode).indexOf(String(categoryId));
+        }
+
+        function categoryRoleForRank(rank) {
+            if (rank <= 0) return "primary";
+            if (rank === 1) return "secondary";
+            return "tertiary";
+        }
+
+        function roleClassForRank(rank) {
+            return `role-${categoryRoleForRank(rank)}`;
+        }
+
+        function roleShortLabel(rank) {
+            const role = categoryRoleForRank(rank);
+            if (role === "primary") return "P";
+            if (role === "secondary") return "S";
+            return "T";
+        }
+
+        function effectiveCategoryMembershipMode() {
+            return state.mapViewMode === MAP_VIEW_TIMELINE ? CATEGORY_MEMBERSHIP_PRIMARY : state.categoryMembershipMode;
+        }
+
+        function episodeBelongsToCategory(episode, categoryId) {
+            const rank = categoryMembershipRank(episode, categoryId);
+            if (rank < 0) return false;
+            if (effectiveCategoryMembershipMode() === CATEGORY_MEMBERSHIP_PRIMARY) return rank === 0;
+            return true;
+        }
+
+        function categoryById(id) {
+            return state.categories.find((entry) => entry.id === id);
+        }
+
+        function categoryNameById(id) {
+            const match = categoryById(id);
+            return match ? match.name : id;
+        }
+
+        function categoryColor(id) {
+            const index = Math.max(0, state.categories.findIndex((entry) => entry.id === id));
+            return palette[index % palette.length];
+        }
+
+        function episodeNumberLabel(episode) {
+            if (episode.episode_number !== null && episode.episode_number !== undefined && episode.episode_number !== "") {
+                return `Ep. ${episode.episode_number}`;
+            }
+            const title = String(episode.title || "");
+            const explicit = title.match(/^(?:Episode\s+)?(\d+)\s*[:.-]/i);
+            if (explicit) return `Ep. ${explicit[1]}`;
+            return "Ep.";
+        }
+
+        function cleanTitle(episode) {
+            return String(episode.title || "Untitled episode").replace(/^Episode\s+\d+\s*[:.-]\s*/i, "");
+        }
+
+        /** Light pre-processing before map wrapping so distinctive words surface in the first lines. */
+        function shortenTitleForLabel(rawTitle) {
+            let t = String(rawTitle || "").trim();
+            t = t.replace(/^A\s+conversation\s+with\s+/i, "");
+            t = t.replace(/^How\s+|^Why\s+|^What\s+/i, "");
+            t = t.replace(/\s+with\s+(Dr\.?|Prof\.?|Mr\.?|Mrs\.?|Ms\.?)\s+/i, " w/ ");
+            t = t.replace(/\s*[\u2014\-]\s*.*$/, "");
+            t = t.replace(/\bEpisode\b/gi, "Ep.");
+            return t.trim();
+        }
+
+        /** Episodes in chosen membership mode for this category, oldest → newest (undated last). */
+        function episodesSortedForCategoryBrowse(categoryId) {
+            const cid = String(categoryId);
+            return state.episodes
+                .filter((e) => episodeBelongsToCategory(e, cid))
+                .sort((a, b) => {
+                    const ta = publishDateToMs(a.publish_date);
+                    const tb = publishDateToMs(b.publish_date);
+                    if (ta != null && tb != null) return ta - tb;
+                    if (ta != null) return -1;
+                    if (tb != null) return 1;
+                    return cleanTitle(a).localeCompare(cleanTitle(b));
+                });
+        }
+
+        function categoryEpisodeCount(categoryId) {
+            const cid = String(categoryId);
+            const currentMode = effectiveCategoryMembershipMode();
+            return state.episodes.filter((episode) => {
+                const rank = categoryMembershipRank(episode, cid);
+                if (rank < 0) return false;
+                if (currentMode === CATEGORY_MEMBERSHIP_PRIMARY) return rank === 0;
+                return true;
+            }).length;
+        }
+
+        function mapCategoryVisible(categoryId) {
+            if (state.mapViewMode !== MAP_VIEW_COLUMNS) return true;
+            if (state.mapTrailsExpanded) return true;
+            if (state.categoryBrowseId) return String(categoryId) === String(state.categoryBrowseId);
+            const cid = String(categoryId);
+            if (
+                state.searchTrailCategoryIds
+                && state.searchTrailCategoryIds.size > 0
+                && state.searchEpisodeIds.length > 0
+                && state.searchTrailCategoryIds.has(cid)
+            ) {
+                return true;
+            }
+            return false;
+        }
+
+        function refreshSearchTrailCategoryIds() {
+            state.searchTrailCategoryIds = null;
+            if (!state.searchEpisodeIds.length) return;
+            const catSet = new Set();
+            state.searchEpisodeIds.forEach((eid) => {
+                const ep = state.episodeById.get(String(eid));
+                if (!ep) return;
+                normalizedCategoryIds(ep).forEach((cid) => catSet.add(String(cid)));
+            });
+            if (catSet.size) state.searchTrailCategoryIds = catSet;
+        }
+
+        function thumbnailPanelEpisodes() {
+            if (state.categoryBrowseId) {
+                return episodesSortedForCategoryBrowse(state.categoryBrowseId);
+            }
+            return state.searchResults;
+        }
+
+        function hydrateEpisodeForDisplay(episode) {
+            const base = state.episodeById.get(String(episode.episode_id)) || {};
+            const merged = { ...base, ...episode };
+            if (!Array.isArray(merged.category_ids) || !merged.category_ids.length) {
+                if (Array.isArray(base.category_ids) && base.category_ids.length) {
+                    merged.category_ids = base.category_ids;
+                } else if (base.category_id) {
+                    merged.category_ids = [String(base.category_id)];
+                }
+            }
+            if (!merged.category_id && merged.category_ids && merged.category_ids.length) {
+                merged.category_id = String(merged.category_ids[0]);
+            }
+            if ((!Array.isArray(merged.themes) || !merged.themes.length) && Array.isArray(base.themes)) {
+                merged.themes = base.themes;
+            }
+            if (!merged.summary && base.summary) {
+                merged.summary = base.summary;
+            }
+            return merged;
+        }
+
+        function youtubeVideoIdFromUrl(sourceUrl) {
+            if (!sourceUrl) return "";
+            try {
+                const url = new URL(sourceUrl);
+                if (url.hostname.includes("youtu.be")) return url.pathname.replace("/", "");
+                if (url.searchParams.has("v")) return url.searchParams.get("v") || "";
+                return "";
+            } catch (_) {
+                return "";
+            }
+        }
+
+        function youtubeVideoId(episode) {
+            if (episode && episode.video_id) return String(episode.video_id);
+            return youtubeVideoIdFromUrl(episode && episode.source_url);
+        }
+
+        function youtubeEmbedUrl(episode) {
+            const videoId = youtubeVideoId(episode);
+            if (!videoId) return "";
+            return `https://www.youtube.com/embed/${encodeURIComponent(videoId)}`;
+        }
+
+        function youtubeThumbnailUrl(episode) {
+            const videoId = youtubeVideoId(episode);
+            if (!videoId) return "";
+            return `https://i.ytimg.com/vi/${encodeURIComponent(videoId)}/hqdefault.jpg`;
+        }
+
+        function createSvg(tag, attrs = {}) {
+            const node = document.createElementNS(SVG_NS, tag);
+            Object.entries(attrs).forEach(([key, value]) => node.setAttribute(key, value));
+            return node;
+        }
+
+        /** Word-wrap arbitrary labels for SVG (column headers, episode titles); respects max lines & ellipsis overflow. */
+        function wrapLabelLines(text, maxLines = 3, maxCharsPerLine = 28) {
+            const t = String(text || "").trim();
+            if (!t) return [""];
+            const words = t.split(/\s+/).filter(Boolean);
+            const lines = [];
+            let i = 0;
+            while (i < words.length && lines.length < maxLines) {
+                let line = "";
+                while (i < words.length) {
+                    const w = words[i];
+                    const next = line ? `${line} ${w}` : w;
+                    if (next.length <= maxCharsPerLine) {
+                        line = next;
+                        i++;
+                    } else if (!line) {
+                        line = w.length > maxCharsPerLine ? `${w.slice(0, Math.max(1, maxCharsPerLine - 1))}…` : w;
+                        i++;
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+                if (line) lines.push(line);
+            }
+            if (i < words.length && lines.length) {
+                const last = lines[lines.length - 1];
+                if (!last.endsWith("…")) lines[lines.length - 1] = `${last}…`;
+            }
+            return lines;
+        }
+
+        function wrapCategoryMapLabel(text, maxLines = 3, maxCharsPerLine = 28) {
+            return wrapLabelLines(text, maxLines, maxCharsPerLine);
+        }
+
+        /** Two-line compact titles beside episode nodes (~column rail width). */
+        function wrapEpisodeLabel(text) {
+            return wrapLabelLines(text, 2, 22);
+        }
+
+        function toggleCategoryBrowse(categoryId) {
+            const nextId = String(categoryId);
+            state.ignoreNextMapStageClick = true;
+            if (state.categoryBrowseId === nextId) {
+                state.categoryBrowseId = null;
+                renderMap();
+                return;
+            }
+            state.categoryBrowseId = nextId;
+            state.mapTrailsExpanded = false;
+            state.selectedEpisodeId = "";
+            state.searchEpisodeIds = [];
+            state.searchResults = [];
+            state.activeQuery = "";
+            state.searchTrailCategoryIds = null;
+            renderTrailOverview();
+        }
+
+        function appendClusterColumnLabel(gridLayer, lines, columnCenterX, baselineY, categoryId) {
+            const roadmapLane =
+                state.searchTrailCategoryIds
+                && state.searchEpisodeIds.length > 0
+                && state.searchTrailCategoryIds.has(String(categoryId));
+            const group = createSvg("g", {
+                class:
+                    "cluster-label-group"
+                    + (state.categoryBrowseId === String(categoryId) ? " active" : "")
+                    + (roadmapLane ? " search-roadmap-lane" : ""),
+                "data-category-id": String(categoryId),
+            });
+            const colHalf = 116;
+            const cardTop = baselineY - 62;
+            const cardHeight = 76;
+            const cardWidth = colHalf * 2;
+            const catColor = categoryColor(categoryId);
+            const countText = `${categoryEpisodeCount(categoryId)} eps`;
+            group.appendChild(
+                createSvg("rect", {
+                    class: "cluster-card-bg",
+                    x: columnCenterX - colHalf,
+                    y: cardTop,
+                    width: cardWidth,
+                    height: cardHeight,
+                    rx: "16",
+                    ry: "16",
+                    fill: catColor,
+                    "fill-opacity": "0.72",
+                }),
+            );
+            group.appendChild(
+                createSvg("rect", {
+                    class: "cluster-label-hit",
+                    x: columnCenterX - colHalf,
+                    y: cardTop,
+                    width: cardWidth,
+                    height: cardHeight,
+                    rx: "16",
+                    ry: "16",
+                }),
+            );
+            const textEl = createSvg("text", {
+                x: columnCenterX,
+                y: cardTop + 27,
+                class: "cluster-card-title",
+                "text-anchor": "middle",
+            });
+            const visibleLines = lines.slice(0, 2);
+            visibleLines.forEach((line, li) => {
+                const tspan = createSvg("tspan", {
+                    x: columnCenterX,
+                    dy: li === 0 ? "0" : "1.18em",
+                });
+                tspan.textContent = line;
+                textEl.appendChild(tspan);
+            });
+            group.appendChild(textEl);
+            const countEl = createSvg("text", {
+                x: columnCenterX,
+                y: cardTop + cardHeight - 10,
+                class: "cluster-card-count",
+                "text-anchor": "middle",
+            });
+            countEl.textContent = countText;
+            group.appendChild(countEl);
+            group.addEventListener("pointerdown", (event) => {
+                event.stopPropagation();
+            });
+            group.addEventListener("click", (event) => {
+                event.stopPropagation();
+                toggleCategoryBrowse(categoryId);
+            });
+            gridLayer.appendChild(group);
+        }
+
+        function sortedEpisodesForLayout() {
+            return [...state.episodes].sort((a, b) => {
+                const catA = primaryCategoryId(a);
+                const catB = primaryCategoryId(b);
+                if (catA !== catB) return catA.localeCompare(catB);
+                const dateA = String(a.publish_date || "");
+                const dateB = String(b.publish_date || "");
+                if (dateA !== dateB) return dateA.localeCompare(dateB);
+                return cleanTitle(a).localeCompare(cleanTitle(b));
+            });
+        }
+
+        /** Stable pseudo-random offsets per episode so the map feels alive without layout jitter on re-render. */
+        function episodeLayoutNudge(episodeId, columnIndex, rowIndex) {
+            const s = String(episodeId);
+            let h = 2166136261;
+            for (let i = 0; i < s.length; i++) {
+                h ^= s.charCodeAt(i);
+                h = Math.imul(h, 16777619);
+            }
+            const u = h >>> 0;
+            const sinWave = Math.sin(rowIndex * 0.92 + columnIndex * 0.63) * 26;
+            const hashSwing = ((u % 21) - 10) * 0.95;
+            const dx = Math.max(-30, Math.min(30, Math.round(sinWave + hashSwing)));
+            const dy = Math.max(-12, Math.min(12, (((u >>> 12) % 25) - 12)));
+            return { dx, dy };
+        }
+
+        function episodeTimelineNudge(episodeId, bandIndex) {
+            const s = String(episodeId);
+            let h = 2166136261;
+            for (let i = 0; i < s.length; i++) {
+                h ^= s.charCodeAt(i);
+                h = Math.imul(h, 16777619);
+            }
+            const u = h >>> 0;
+            const wave = Math.sin(bandIndex * 1.1 + (u % 17) * 0.08) * 10;
+            const dx = Math.max(-18, Math.min(18, Math.round(wave + ((u % 23) - 11) * 0.9)));
+            const dy = Math.max(-36, Math.min(36, Math.round((((u >>> 10) % 35) - 17) * 1.05)));
+            return { dx, dy };
+        }
+
+        /** Greedy min-gap pack, then stretch the cluster across the lane (focused timeline legibility). */
+        function packTimelineLaneXPositions(layout, episodeIds, leftBound, rightBound, minGap) {
+            const items = episodeIds
+                .map((eid) => {
+                    const id = String(eid);
+                    const pos = layout.get(id);
+                    return pos ? { id, x: pos.x, pos } : null;
+                })
+                .filter(Boolean);
+            if (items.length <= 1) return;
+            items.sort((a, b) => a.x - b.x || a.id.localeCompare(b.id));
+            let xs = items.map((it) => it.x);
+            for (let i = 1; i < xs.length; i++) {
+                xs[i] = Math.max(xs[i], xs[i - 1] + minGap);
+            }
+            const lo = xs[0];
+            const hi = xs[xs.length - 1];
+            const span = hi - lo;
+            const avail = rightBound - leftBound;
+            if (span <= 1e-6) {
+                const cx = (leftBound + rightBound) / 2;
+                items.forEach((it) => {
+                    it.pos.x = cx;
+                });
+                return;
+            }
+            xs = xs.map((x) => leftBound + ((x - lo) / span) * avail);
+            items.forEach((it, i) => {
+                it.pos.x = xs[i];
+            });
+        }
+
+        function buildCategoryBuckets() {
+            const byCategory = new Map();
+            const membershipMode = effectiveCategoryMembershipMode();
+            sortedEpisodesForLayout().forEach((episode) => {
+                const categoryIds = normalizedCategoryIds(episode);
+                if (membershipMode === CATEGORY_MEMBERSHIP_PRIMARY) {
+                    const categoryId = categoryIds[0] || "uncategorized";
+                    if (!byCategory.has(categoryId)) byCategory.set(categoryId, []);
+                    byCategory.get(categoryId).push({ episode, membershipRank: 0 });
+                    return;
+                }
+                categoryIds.forEach((categoryId, membershipRank) => {
+                    if (!byCategory.has(categoryId)) byCategory.set(categoryId, []);
+                    byCategory.get(categoryId).push({ episode, membershipRank });
+                });
+            });
+            const categoryIds = state.categories.map((cat) => cat.id).filter((id) => byCategory.has(id));
+            [...byCategory.keys()].forEach((id) => {
+                if (!categoryIds.includes(id)) categoryIds.push(id);
+            });
+            return { categoryIds, byCategory };
+        }
+
+        function computeLayoutColumns() {
+            state.layout.clear();
+            state.nodeMetaByKey.clear();
+            state.primaryLayoutKeyByEpisode.clear();
+            const { categoryIds, byCategory } = buildCategoryBuckets();
+            const columnWidth = 260;
+            const rowHeight = 108;
+            const top = 150;
+            const left = 160;
+            categoryIds.forEach((categoryId, columnIndex) => {
+                const entries = byCategory.get(categoryId) || [];
+                entries.forEach((entry, rowIndex) => {
+                    const { episode, membershipRank } = entry;
+                    const { dx, dy } = episodeLayoutNudge(`${episode.episode_id}:${categoryId}`, columnIndex, rowIndex);
+                    const key = `${episode.episode_id}::${categoryId}`;
+                    state.layout.set(key, {
+                        x: left + columnIndex * columnWidth + dx,
+                        y: top + rowIndex * rowHeight + dy,
+                        categoryId,
+                        color: categoryColor(categoryId),
+                        membershipRank,
+                    });
+                    state.nodeMetaByKey.set(key, { episode, categoryId, membershipRank });
+                    const episodeId = String(episode.episode_id);
+                    if (membershipRank === 0 || !state.primaryLayoutKeyByEpisode.has(episodeId)) {
+                        state.primaryLayoutKeyByEpisode.set(episodeId, key);
+                    }
+                });
+            });
+            const maxRows = Math.max(1, ...[...byCategory.values()].map((items) => items.length));
+            const width = left * 2 + Math.max(1, categoryIds.length) * columnWidth;
+            const height = top * 2 + maxRows * rowHeight;
+            return { width, height, categoryIds, view: MAP_VIEW_COLUMNS };
+        }
+
+        function computeLayoutTimeline() {
+            state.layout.clear();
+            state.nodeMetaByKey.clear();
+            state.primaryLayoutKeyByEpisode.clear();
+            const { categoryIds, byCategory } = buildCategoryBuckets();
+            const bandHeight = 210;
+            const topMargin = 88;
+            const leftMargin = 580;
+            const rightMargin = 120;
+            const bottomMargin = 268;
+            const axisGap = 80;
+
+            const times = state.episodes.map((e) => publishDateToMs(e.publish_date)).filter((t) => t != null);
+            let minT;
+            let maxT;
+            const fr = normalizedTimelineFocusRange();
+            if (fr) {
+                minT = fr.minT;
+                maxT = fr.maxT;
+                if (maxT - minT < 86400000) {
+                    const mid = (minT + maxT) / 2;
+                    minT = mid - 43200000;
+                    maxT = mid + 43200000;
+                }
+            } else if (times.length) {
+                minT = Math.min(...times);
+                maxT = Math.max(...times);
+                const spanRaw = maxT - minT || 86400000;
+                const pad = Math.max(spanRaw * 0.05, 86400000 * 14);
+                minT -= pad;
+                maxT += pad;
+            } else {
+                const now = Date.now();
+                minT = now - 86400000 * 365 * 3;
+                maxT = now;
+            }
+            const range = Math.max(maxT - minT, 86400000);
+            const daySpan = range / 86400000;
+            const pxPerDay = Math.min(44, Math.max(14, 1500 / Math.max(daySpan, 45)));
+            const innerPlotWidth = Math.max(1100, Math.min(7200, Math.ceil(daySpan * pxPerDay)));
+
+            const axisY = topMargin + categoryIds.length * bandHeight + axisGap;
+            const width = leftMargin + innerPlotWidth + rightMargin;
+            const height = axisY + bottomMargin;
+
+            const unkPerBand = new Map();
+            categoryIds.forEach((categoryId, ci) => {
+                const entries = byCategory.get(categoryId) || [];
+                entries.forEach((entry) => {
+                    const { episode, membershipRank } = entry;
+                    const t = publishDateToMs(episode.publish_date);
+                    let xBase;
+                    if (t == null) {
+                        const k = (unkPerBand.get(categoryId) || 0) + 1;
+                        unkPerBand.set(categoryId, k);
+                        xBase = leftMargin + 22 + ((k * 17) % Math.max(120, Math.floor(innerPlotWidth * 0.35)));
+                    } else {
+                        xBase = leftMargin + ((t - minT) / range) * innerPlotWidth;
+                    }
+                    const bandMid = topMargin + ci * bandHeight + bandHeight / 2;
+                    const { dx, dy } = episodeTimelineNudge(episode.episode_id, ci);
+                    let x = xBase + dx;
+                    let y = bandMid + dy;
+                    x = Math.max(leftMargin + 8, Math.min(leftMargin + innerPlotWidth - 8, x));
+                    y = Math.max(topMargin + ci * bandHeight + 36, Math.min(topMargin + (ci + 1) * bandHeight - 36, y));
+                    const key = `${episode.episode_id}::${categoryId}`;
+                    state.layout.set(key, {
+                        x,
+                        y,
+                        categoryId,
+                        color: categoryColor(categoryId),
+                        membershipRank,
+                    });
+                    state.nodeMetaByKey.set(key, { episode, categoryId, membershipRank });
+                    const episodeId = String(episode.episode_id);
+                    if (membershipRank === 0 || !state.primaryLayoutKeyByEpisode.has(episodeId)) {
+                        state.primaryLayoutKeyByEpisode.set(episodeId, key);
+                    }
+                });
+            });
+
+            if (fr) {
+                const leftB = leftMargin + 8;
+                const rightB = leftMargin + innerPlotWidth - 8;
+                const minGap = 78;
+                categoryIds.forEach((categoryId) => {
+                    const entries = byCategory.get(categoryId) || [];
+                    const datedIds = entries
+                        .map((entry) => entry.episode)
+                        .filter((e) => episodeInTimelineFocus(e))
+                        .map((e) => `${e.episode_id}::${categoryId}`);
+                    packTimelineLaneXPositions(state.layout, datedIds, leftB, rightB, minGap);
+                });
+            }
+
+            state.timelineLayoutMeta = {
+                minT,
+                maxT,
+                range,
+                leftMargin,
+                innerPlotWidth,
+            };
+
+            return {
+                width,
+                height,
+                categoryIds,
+                view: MAP_VIEW_TIMELINE,
+                minT,
+                maxT,
+                range,
+                bandHeight,
+                topMargin,
+                leftMargin,
+                innerPlotWidth,
+                axisY,
+            };
+        }
+
+        function computeLayout() {
+            return state.mapViewMode === MAP_VIEW_TIMELINE ? computeLayoutTimeline() : computeLayoutColumns();
+        }
+
+        function applyTransform() {
+            document.getElementById("viewport").setAttribute("transform", `translate(${state.tx} ${state.ty}) scale(${state.scale})`);
+        }
+
+        /** Client/window coordinates → viewport “world” coords (same space as episode layout x/y). */
+        function clientXYToWorld(clientX, clientY) {
+            const svg = document.getElementById("map-svg");
+            const vp = document.getElementById("viewport");
+            const pt = svg.createSVGPoint();
+            pt.x = clientX;
+            pt.y = clientY;
+            const out = pt.matrixTransform(vp.getScreenCTM().inverse());
+            return { x: out.x, y: out.y };
+        }
+
+        /** Fit view so world-axis-aligned rect fills ~92% of the viewBox (timeline drill-in). */
+        function zoomViewportToWorldRect(xmin, ymin, xmax, ymax) {
+            const svg = document.getElementById("map-svg");
+            const vb = svg.viewBox.baseVal;
+            let x0 = Math.min(xmin, xmax);
+            let x1 = Math.max(xmin, xmax);
+            let y0 = Math.min(ymin, ymax);
+            let y1 = Math.max(ymin, ymax);
+            const pad = 40;
+            x0 -= pad;
+            x1 += pad;
+            y0 -= pad;
+            y1 += pad;
+            const bw = Math.max(x1 - x0, 72);
+            const bh = Math.max(y1 - y0, 72);
+            const cx = (x0 + x1) / 2;
+            const cy = (y0 + y1) / 2;
+
+            const sFit = Math.min((vb.width * 0.92) / bw, (vb.height * 0.92) / bh);
+            const sNew = Math.min(MAP_SCALE_MAX, Math.max(MAP_SCALE_MIN, sFit));
+
+            state.scale = sNew;
+            state.tx = vb.width / 2 - sNew * cx;
+            state.ty = vb.height / 2 - sNew * cy;
+            applyTransform();
+        }
+
+        function hideMarqueeRect() {
+            const el = document.getElementById("map-marquee-rect");
+            if (el) el.classList.remove("visible");
+        }
+
+        function updateMarqueeRect(clientX, clientY) {
+            const m = state.marqueeDrag;
+            if (!m) return;
+            const stage = document.querySelector(".map-stage");
+            const box = stage.getBoundingClientRect();
+            const el = document.getElementById("map-marquee-rect");
+            const left = Math.min(m.startCX, clientX) - box.left;
+            const top = Math.min(m.startCY, clientY) - box.top;
+            el.style.left = `${Math.max(0, left)}px`;
+            el.style.top = `${Math.max(0, top)}px`;
+            el.style.width = `${Math.abs(clientX - m.startCX)}px`;
+            el.style.height = `${Math.abs(clientY - m.startCY)}px`;
+            el.classList.add("visible");
+        }
+
+        function finishMarqueeZoom(event) {
+            const m = state.marqueeDrag;
+            if (!m) return;
+            const minPx = 28;
+            if (Math.abs(event.clientX - m.startCX) < minPx && Math.abs(event.clientY - m.startCY) < minPx) {
+                hideMarqueeRect();
+                return;
+            }
+
+            const w0 = clientXYToWorld(m.startCX, m.startCY);
+            const w1 = clientXYToWorld(event.clientX, event.clientY);
+            const w2 = clientXYToWorld(event.clientX, m.startCY);
+            const w3 = clientXYToWorld(m.startCX, event.clientY);
+            let xmin = Infinity;
+            let xmax = -Infinity;
+            let ymin = Infinity;
+            let ymax = -Infinity;
+            [w0, w1, w2, w3].forEach((p) => {
+                xmin = Math.min(xmin, p.x);
+                xmax = Math.max(xmax, p.x);
+                ymin = Math.min(ymin, p.y);
+                ymax = Math.max(ymax, p.y);
+            });
+            hideMarqueeRect();
+            const meta = state.timelineLayoutMeta;
+            if (
+                state.mapViewMode === MAP_VIEW_TIMELINE &&
+                meta &&
+                meta.innerPlotWidth > 0 &&
+                Number.isFinite(meta.minT) &&
+                Number.isFinite(meta.range)
+            ) {
+                const xl = Math.min(xmin, xmax);
+                const xr = Math.max(xmin, xmax);
+                let tLeft = meta.minT + ((xl - meta.leftMargin) / meta.innerPlotWidth) * meta.range;
+                let tRight = meta.minT + ((xr - meta.leftMargin) / meta.innerPlotWidth) * meta.range;
+                if (tLeft > tRight) {
+                    const swap = tLeft;
+                    tLeft = tRight;
+                    tRight = swap;
+                }
+                const spanMs = tRight - tLeft;
+                if (spanMs < 86400000 * 2) {
+                    const mid = (tLeft + tRight) / 2;
+                    tLeft = mid - 86400000;
+                    tRight = mid + 86400000;
+                }
+                state.timelineFocusRange = { minT: tLeft, maxT: tRight };
+                state.timelineZoomRegionMode = false;
+                renderAll();
+                resetMap();
+            } else {
+                zoomViewportToWorldRect(xmin, ymin, xmax, ymax);
+            }
+            state.ignoreNextMapStageClick = true;
+        }
+
+        function syncTimelineMapTools() {
+            const wrap = document.getElementById("timeline-map-tools");
+            const svg = document.getElementById("map-svg");
+            if (wrap) wrap.hidden = state.mapViewMode !== MAP_VIEW_TIMELINE;
+            const lbl = document.getElementById("timeline-labels-toggle");
+            const zm = document.getElementById("timeline-zoom-region-toggle");
+            if (lbl) {
+                lbl.textContent = state.timelineShowLabels ? "Labels on" : "Labels off";
+                lbl.classList.toggle("active", state.timelineShowLabels);
+            }
+            if (zm) zm.classList.toggle("active", state.timelineZoomRegionMode);
+            if (svg) {
+                svg.classList.toggle(
+                    "zoom-region-mode",
+                    state.mapViewMode === MAP_VIEW_TIMELINE && state.timelineZoomRegionMode,
+                );
+            }
+        }
+
+        function resetMap() {
+            const svg = document.getElementById("map-svg");
+            const box = svg.getBoundingClientRect();
+            const layout = computeLayout();
+            state.scale = Math.min(1.05, Math.max(0.42, (box.width - 120) / Math.max(layout.width, 1)));
+            state.tx = 36;
+            state.ty = 34;
+            applyTransform();
+        }
+
+        function isEpisodeVisible(episode) {
+            if (state.selectedCategoryId !== ALL_CATEGORIES_ID && !episodeBelongsToCategory(episode, state.selectedCategoryId)) return false;
+            if (state.mapViewMode === MAP_VIEW_TIMELINE && !episodeInTimelineFocus(episode)) return false;
+            return true;
+        }
+
+        function renderMapColumnsGrid(gridLayer, layoutInfo) {
+            layoutInfo.categoryIds.forEach((categoryId, index) => {
+                const x = 160 + index * 260;
+                const title = String(categoryNameById(categoryId) || "").split(",")[0].trim();
+                const labelLines = wrapLabelLines(title, 3, 28);
+                appendClusterColumnLabel(gridLayer, labelLines, x, 104, categoryId);
+
+                gridLayer.appendChild(
+                    createSvg("line", {
+                        class: "cluster-spine",
+                        x1: x,
+                        y1: 110,
+                        x2: x,
+                        y2: layoutInfo.height - 120,
+                        stroke: categoryColor(categoryId),
+                        "stroke-opacity": mapCategoryVisible(categoryId) ? "0.16" : "0",
+                        "stroke-width": "2",
+                    }),
+                );
+            });
+
+            ["EARLY", "MIDDLE", "RECENT"].forEach((labelText, index) => {
+                const label = createSvg("text", { x: 36, y: 180 + index * Math.max(170, layoutInfo.height / 4), class: "era-label" });
+                label.textContent = labelText;
+                gridLayer.appendChild(label);
+            });
+        }
+
+        function renderMapTimelineGrid(gridLayer, layoutInfo) {
+            const {
+                categoryIds,
+                minT,
+                range,
+                bandHeight,
+                topMargin,
+                leftMargin,
+                innerPlotWidth,
+                axisY,
+            } = layoutInfo;
+
+            const timelineFontFamily = "Inter, ui-sans-serif, system-ui, sans-serif";
+
+            categoryIds.forEach((categoryId, ci) => {
+                const y0 = topMargin + ci * bandHeight;
+                gridLayer.appendChild(
+                    createSvg("rect", {
+                        x: leftMargin - 2,
+                        y: y0,
+                        width: innerPlotWidth + 4,
+                        height: bandHeight,
+                        fill: ci % 2 ? "rgba(255,255,255,0.028)" : "rgba(255,255,255,0.048)",
+                        stroke: "none",
+                    }),
+                );
+                const bandMid = y0 + bandHeight / 2;
+                const wmTitle = String(categoryNameById(categoryId) || "").split(",")[0].trim();
+                let wmFont = Math.min(78, Math.round(bandHeight * 0.36));
+                if (wmTitle.length > 24) {
+                    wmFont = Math.max(32, Math.round(wmFont * Math.sqrt(24 / wmTitle.length)));
+                }
+                const wm = createSvg("text", {
+                    class: "timeline-band-watermark",
+                    x: leftMargin + innerPlotWidth / 2,
+                    y: bandMid,
+                    "dominant-baseline": "middle",
+                    "text-anchor": "middle",
+                    "font-size": String(wmFont),
+                    "font-weight": "700",
+                    "font-family": timelineFontFamily,
+                });
+                wm.textContent = wmTitle;
+                const wmFitWidth = Math.max(160, innerPlotWidth - 56);
+                const approxGlyphWidth = wmFont * 0.52;
+                if (wmTitle.length * approxGlyphWidth > wmFitWidth) {
+                    wm.setAttribute("textLength", String(wmFitWidth));
+                    wm.setAttribute("lengthAdjust", "spacingAndGlyphs");
+                }
+                gridLayer.appendChild(wm);
+                gridLayer.appendChild(
+                    createSvg("line", {
+                        x1: leftMargin,
+                        y1: y0 + bandHeight,
+                        x2: leftMargin + innerPlotWidth,
+                        y2: y0 + bandHeight,
+                        stroke: "rgba(148,163,184,0.14)",
+                        "stroke-width": "1",
+                    }),
+                );
+                const title = wmTitle;
+                const lines = wrapLabelLines(title, 4, 34);
+                const lh = 46;
+                const startY = bandMid - ((lines.length - 1) * lh) / 2;
+                const roadmapLane =
+                    state.searchTrailCategoryIds
+                    && state.searchEpisodeIds.length > 0
+                    && state.searchTrailCategoryIds.has(String(categoryId));
+                const labelGroup = createSvg("g", {
+                    class:
+                        "timeline-band-label-group"
+                        + (state.categoryBrowseId === String(categoryId) ? " active" : "")
+                        + (roadmapLane ? " search-roadmap-lane" : ""),
+                    "data-category-id": String(categoryId),
+                });
+                const cardWidth = Math.max(120, leftMargin - 28);
+                const cardX = 10;
+                const cardY = y0 + 8;
+                const cardH = bandHeight - 16;
+                const catColor = categoryColor(categoryId);
+                const catMeta = categoryById(categoryId);
+                labelGroup.appendChild(
+                    createSvg("rect", {
+                        class: "cluster-card-bg",
+                        x: cardX,
+                        y: cardY,
+                        width: cardWidth,
+                        height: cardH,
+                        rx: "16",
+                        ry: "16",
+                        fill: catColor,
+                        "fill-opacity": "0.7",
+                    }),
+                );
+                labelGroup.appendChild(
+                    createSvg("text", {
+                        x: cardX + cardWidth - 14,
+                        y: cardY + cardH - 12,
+                        class: "cluster-card-count",
+                        "text-anchor": "end",
+                    }),
+                ).textContent = `${catMeta && catMeta.episode_count != null ? catMeta.episode_count : 0} eps`;
+                labelGroup.appendChild(
+                    createSvg("rect", {
+                        class: "timeline-band-label-hit",
+                        x: cardX,
+                        y: cardY,
+                        width: cardWidth,
+                        height: cardH,
+                        rx: "16",
+                        ry: "16",
+                    }),
+                );
+                lines.forEach((line, i) => {
+                    const t = createSvg("text", {
+                        class: "timeline-band-label",
+                        x: leftMargin - 26,
+                        y: startY + i * lh,
+                        fill: "#ffffff",
+                        stroke: "#050816",
+                        "stroke-width": "4",
+                        "paint-order": "stroke fill",
+                        "font-size": "38",
+                        "font-weight": "800",
+                        "font-family": timelineFontFamily,
+                        "text-anchor": "end",
+                    });
+                    t.textContent = line;
+                    labelGroup.appendChild(t);
+                });
+                labelGroup.addEventListener("pointerdown", (event) => {
+                    event.stopPropagation();
+                });
+                labelGroup.addEventListener("click", (event) => {
+                    event.stopPropagation();
+                    toggleCategoryBrowse(categoryId);
+                });
+                gridLayer.appendChild(labelGroup);
+            });
+
+            gridLayer.appendChild(
+                createSvg("line", {
+                    x1: leftMargin,
+                    y1: axisY,
+                    x2: leftMargin + innerPlotWidth,
+                    y2: axisY,
+                    stroke: "rgba(210, 230, 255, 0.65)",
+                    "stroke-width": "4",
+                    "stroke-linecap": "round",
+                }),
+            );
+
+            const tickCount = Math.min(11, Math.max(4, Math.floor(innerPlotWidth / 220)));
+            for (let i = 0; i <= tickCount; i++) {
+                const frac = i / tickCount;
+                const tx = leftMargin + frac * innerPlotWidth;
+                const tt = minT + frac * range;
+                gridLayer.appendChild(
+                    createSvg("line", {
+                        x1: tx,
+                        y1: axisY,
+                        x2: tx,
+                        y2: axisY + 34,
+                        stroke: "rgba(210, 230, 255, 0.65)",
+                        "stroke-width": "3",
+                        "stroke-linecap": "round",
+                    }),
+                );
+                const tickLabel = createSvg("text", {
+                    class: "timeline-tick-label",
+                    x: tx,
+                    y: axisY + 98,
+                    fill: "#ffffff",
+                    stroke: "#050816",
+                    "stroke-width": "6.5",
+                    "paint-order": "stroke fill",
+                    "font-size": "68",
+                    "font-weight": "800",
+                    "font-family": timelineFontFamily,
+                    "text-anchor": "middle",
+                });
+                tickLabel.textContent = formatTimelineTick(tt, range);
+                gridLayer.appendChild(tickLabel);
+                gridLayer.appendChild(
+                    createSvg("line", {
+                        x1: tx,
+                        y1: topMargin,
+                        x2: tx,
+                        y2: axisY - 12,
+                        stroke: "rgba(148,163,184,0.12)",
+                        "stroke-width": "1.5",
+                    }),
+                );
+            }
+
+            const axisTitle = createSvg("text", {
+                class: "timeline-axis-title",
+                x: leftMargin + innerPlotWidth / 2,
+                y: axisY + 172,
+                fill: "#dff1ff",
+                stroke: "#050816",
+                "stroke-width": "3",
+                "paint-order": "stroke fill",
+                "font-size": "26",
+                "font-weight": "800",
+                "font-family": timelineFontFamily,
+                "text-anchor": "middle",
+            });
+            axisTitle.textContent = "Publish date";
+            gridLayer.appendChild(axisTitle);
+        }
+
+        function syncMapViewButtons() {
+            const col = document.getElementById("map-view-columns");
+            const tim = document.getElementById("map-view-timeline");
+            if (!col || !tim) return;
+            col.classList.toggle("active", state.mapViewMode === MAP_VIEW_COLUMNS);
+            tim.classList.toggle("active", state.mapViewMode === MAP_VIEW_TIMELINE);
+        }
+
+        function syncMainMapLaneControls() {
+            const controls = document.getElementById("map-lane-controls");
+            if (!controls) return;
+            controls.hidden = state.mapViewMode !== MAP_VIEW_COLUMNS;
+            const showAll = document.getElementById("show-all-trails-button");
+            const collapseAll = document.getElementById("collapse-all-trails-button");
+            const primaryOnly = document.getElementById("show-primary-only-button");
+            const showAllMembership = document.getElementById("show-all-category-episodes-button");
+            if (showAll) showAll.classList.toggle("active", state.mapTrailsExpanded);
+            if (collapseAll) collapseAll.classList.toggle("active", !state.mapTrailsExpanded);
+            if (primaryOnly) primaryOnly.classList.toggle("active", state.categoryMembershipMode === CATEGORY_MEMBERSHIP_PRIMARY);
+            if (showAllMembership) showAllMembership.classList.toggle("active", state.categoryMembershipMode === CATEGORY_MEMBERSHIP_ALL);
+        }
+
+        function renderMap() {
+            const gridLayer = document.getElementById("grid-layer");
+            const trailLayer = document.getElementById("trail-layer");
+            const nodeLayer = document.getElementById("node-layer");
+            gridLayer.innerHTML = "";
+            trailLayer.innerHTML = "";
+            nodeLayer.innerHTML = "";
+
+            const layoutInfo = computeLayout();
+            const svg = document.getElementById("map-svg");
+            svg.setAttribute("viewBox", `0 0 ${Math.max(900, layoutInfo.width)} ${Math.max(680, layoutInfo.height)}`);
+
+            if (layoutInfo.view === MAP_VIEW_TIMELINE) {
+                renderMapTimelineGrid(gridLayer, layoutInfo);
+            } else {
+                renderMapColumnsGrid(gridLayer, layoutInfo);
+            }
+
+            const searchSet = new Set(state.searchEpisodeIds);
+            const visibleTrailPoints = [];
+            state.searchEpisodeIds.forEach((episodeId) => {
+                const episode = state.episodeById.get(String(episodeId));
+                if (episode && !isEpisodeVisible(episode)) return;
+                const layoutKey = state.primaryLayoutKeyByEpisode.get(String(episodeId));
+                const pos = layoutKey ? state.layout.get(layoutKey) : null;
+                if (pos) visibleTrailPoints.push(pos);
+            });
+            if (state.searchKind !== "episode") {
+                for (let i = 0; i < visibleTrailPoints.length - 1; i++) {
+                    const a = visibleTrailPoints[i];
+                    const b = visibleTrailPoints[i + 1];
+                    trailLayer.appendChild(
+                        createSvg("path", {
+                            d: `M ${a.x} ${a.y} L ${b.x} ${b.y}`,
+                            class: "trail-path",
+                            "marker-end": "url(#trail-arrowhead)",
+                        }),
+                    );
+                }
+            }
+
+            state.nodeMetaByKey.forEach((meta, key) => {
+                const { episode, categoryId, membershipRank } = meta;
+                const id = String(episode.episode_id);
+                const pos = state.layout.get(key);
+                if (!pos) return;
+                const visible = isEpisodeVisible(episode) && mapCategoryVisible(categoryId);
+                const group = createSvg("g", {
+                    class: [
+                        "episode-node",
+                        roleClassForRank(membershipRank),
+                        visible ? "" : "hidden",
+                        searchSet.size && !searchSet.has(id) ? "dimmed" : "",
+                        searchSet.has(id) ? "search-hit" : "",
+                        state.selectedEpisodeId === id ? "selected" : "",
+                    ].filter(Boolean).join(" "),
+                    transform: `translate(${pos.x} ${pos.y})`,
+                    "data-episode-id": id,
+                    "data-node-key": key,
+                });
+                const radius = 21 + Math.min(8, (episode.themes || []).length);
+                group.appendChild(createSvg("circle", { r: radius + 8, class: "node-ring" }));
+                group.appendChild(createSvg("circle", { r: radius, class: "node-core", fill: pos.color }));
+                group.appendChild(createSvg("circle", { cx: -7, cy: -8, r: Math.max(5, radius * 0.34), fill: "url(#nodeGloss)", opacity: "0.65" }));
+                const hideTimelineLabels = layoutInfo.view === MAP_VIEW_TIMELINE && !state.timelineShowLabels;
+                if (!hideTimelineLabels) {
+                    const labelX = radius + 10;
+                    const numLine = createSvg("text", { x: labelX, y: -8, class: "episode-label-num" });
+                    numLine.textContent = episodeNumberLabel(episode);
+                    group.appendChild(numLine);
+
+                    const baseTitle = cleanTitle(episode);
+                    const titleSource = shortenTitleForLabel(baseTitle) || baseTitle;
+                    const titleLines = wrapEpisodeLabel(titleSource);
+                    const titleBlock = createSvg("text", { x: labelX, y: 8, class: "episode-label-title" });
+                    titleLines.forEach((line, idx) => {
+                        const tspan = createSvg("tspan", {
+                            x: labelX,
+                            dy: idx === 0 ? "0" : "1.18em",
+                        });
+                        tspan.textContent = line;
+                        titleBlock.appendChild(tspan);
+                    });
+                    group.appendChild(titleBlock);
+                }
+
+                const trailOrder = searchSet.has(id) ? state.searchEpisodeIds.indexOf(id) : -1;
+                if (trailOrder >= 0 && state.searchKind !== "episode") {
+                    const badgeGroup = createSvg("g", {
+                        transform: `translate(0 ${-(radius + 16)})`,
+                        class: "search-trail-order",
+                    });
+                    badgeGroup.appendChild(createSvg("circle", { r: 12, class: "trail-badge-bg" }));
+                    const badgeText = createSvg("text", { x: 0, y: 0, class: "trail-badge-text" });
+                    badgeText.textContent = String(trailOrder + 1);
+                    badgeGroup.appendChild(badgeText);
+                    group.appendChild(badgeGroup);
+                }
+
+                const roleBadge = createSvg("g", {
+                    class: "node-role-badge",
+                    transform: `translate(${radius - 2} ${-(radius - 2)})`,
+                });
+                roleBadge.appendChild(createSvg("circle", { r: 8, class: "node-role-badge-bg" }));
+                const roleBadgeText = createSvg("text", { x: 0, y: 0.3, class: "node-role-badge-text" });
+                roleBadgeText.textContent = roleShortLabel(membershipRank);
+                roleBadge.appendChild(roleBadgeText);
+                group.appendChild(roleBadge);
+
+                group.addEventListener("mouseenter", (event) => showTooltip(event, episode));
+                group.addEventListener("mousemove", moveTooltip);
+                group.addEventListener("mouseleave", hideTooltip);
+                group.addEventListener("pointerdown", (event) => {
+                    // Prevent map drag capture from swallowing node clicks.
+                    event.stopPropagation();
+                });
+                group.addEventListener("click", () => {
+                    const searchEpisode = state.searchResults.find((item) => String(item.episode_id) === id) || null;
+                    openEpisode(id, searchEpisode);
+                });
+                nodeLayer.appendChild(group);
+            });
+
+            document.getElementById("map-heading").textContent = state.activeQuery
+                ? (state.searchKind === "episode" ? `Title: ${state.activeQuery}` : `Trail: ${state.activeQuery}`)
+                : "God's Eye View";
+            const scoped = state.selectedCategoryId === ALL_CATEGORIES_ID
+                ? state.episodes.length
+                : state.episodes.filter((ep) => episodeBelongsToCategory(ep, state.selectedCategoryId)).length;
+            const trailCount = state.searchEpisodeIds.length;
+            let mapSubtitle;
+            if (state.activeQuery) {
+                if (state.searchKind === "episode") {
+                    if (trailCount <= 1) {
+                        mapSubtitle = `${trailCount} episode title match on the map. Click the node or result card to open it.`;
+                    } else {
+                        mapSubtitle = `${trailCount} episodes match that title text. Matching nodes are highlighted — no transcript trail.`;
+                    }
+                } else {
+                    const roadmapLanes =
+                        state.searchTrailCategoryIds && state.searchTrailCategoryIds.size > 0
+                            ? (
+                                state.mapViewMode === MAP_VIEW_COLUMNS
+                                    ? ` Category lanes for this roadmap are outlined in orange so episodes stay visible.`
+                                    : ` Category tiles touched by these episodes have orange outlines.`
+                            )
+                            : "";
+                    if (trailCount <= 1) {
+                        mapSubtitle = `${trailCount} matching episode on the map.${roadmapLanes} Click the node or result card to inspect the source.`;
+                    } else {
+                        mapSubtitle = `${trailCount} matching episodes are linked in search order (1→${trailCount}). Orange arrows follow that sequence.${roadmapLanes} Click a node or result to inspect the source.`;
+                    }
+                }
+            } else if (state.mapViewMode === MAP_VIEW_TIMELINE) {
+                if (state.timelineFocusRange) {
+                    const a = state.timelineFocusRange.minT;
+                    const b = state.timelineFocusRange.maxT;
+                    const t0 = Math.min(a, b);
+                    const t1 = Math.max(a, b);
+                    const focusedCount = state.episodes.filter((ep) => isEpisodeVisible(ep)).length;
+                    const focusRange = Math.max(t1 - t0, 1);
+                    mapSubtitle = `Focused window ${formatTimelineTick(t0, focusRange)} → ${formatTimelineTick(
+                        t1,
+                        focusRange,
+                    )} (${focusedCount} episodes in scope). Turn Zoom region on to narrow again. Reset map for the full timeline.`;
+                } else {
+                    mapSubtitle = `${scoped} episodes shown. Time runs horizontally by publish date; each band is one category. Click a category card to open or collapse that lane's thumbnail trail on the right. With Zoom region on, drag a rectangle to narrow the window.`;
+                }
+            } else {
+                const membershipText = state.categoryMembershipMode === CATEGORY_MEMBERSHIP_PRIMARY ? "primary lanes only" : "all category memberships";
+                const laneText = state.mapTrailsExpanded ? "All trails expanded." : (state.categoryBrowseId ? "Single trail expanded." : "Trails collapsed by default.");
+                mapSubtitle = `${scoped} episodes in scope (${membershipText}). ${laneText} Click a category card to open or collapse its trail overview.`;
+            }
+            document.getElementById("map-subtitle").textContent = mapSubtitle;
+            syncMapViewButtons();
+            syncMainMapLaneControls();
+            syncTimelineMapTools();
+        }
+
+        function renderResults() {
+            const container = document.getElementById("search-results");
+            const count = document.getElementById("result-count");
+            count.textContent = `${state.searchResults.length} results`;
+            container.innerHTML = "";
+            if (!state.searchResults.length) {
+                container.innerHTML = '<p class="micro">Find an episode by title, or click a category on the map.</p>';
+                return;
+            }
+            state.searchResults.forEach((episode, index) => {
+                const displayEpisode = hydrateEpisodeForDisplay(episode);
+                const card = document.createElement("button");
+                card.className = "result-card";
+                const moments = state.searchKind === "topic" ? (displayEpisode.matching_moments || []).slice(0, 2) : [];
+                card.innerHTML = `
+                    <strong>${index + 1}. ${escapeHtml(episodeNumberLabel(displayEpisode))}: ${escapeHtml(cleanTitle(displayEpisode))}</strong>
+                    <span>${escapeHtml(categoryNameById(primaryCategoryId(displayEpisode)))} · ${escapeHtml(formatPublishDate(displayEpisode.publish_date))}</span>
+                    ${moments.map((moment) => `<span style="margin-top:8px;">${escapeHtml(moment.start_label || "")}: ${escapeHtml(String(moment.text || "").slice(0, 150))}${String(moment.text || "").length > 150 ? "..." : ""}</span>`).join("")}
+                `;
+                card.addEventListener("click", () => openEpisode(displayEpisode.episode_id, displayEpisode));
+                container.appendChild(card);
+            });
+        }
+
+        function renderAll() {
+            renderMap();
+            renderResults();
+        }
+
+        function renderTrailOverview() {
+            const panel = document.getElementById("detail-panel");
+            const content = document.getElementById("detail-content");
+            const episodes = thumbnailPanelEpisodes();
+            if (!episodes.length && !state.categoryBrowseId) {
+                panel.classList.remove("open");
+                return;
+            }
+            state.selectedEpisodeId = "";
+            renderMap();
+            panel.classList.add("open");
+
+            const chipLabel = state.categoryBrowseId
+                ? escapeHtml(categoryNameById(state.categoryBrowseId))
+                : "Trail overview";
+            const membershipLabel = effectiveCategoryMembershipMode() === CATEGORY_MEMBERSHIP_PRIMARY ? "primary category only" : "any category slot";
+            const micro =
+                state.categoryBrowseId
+                    ? `${episodes.length} episode${episodes.length === 1 ? "" : "s"} in this lane (${membershipLabel}), oldest → newest by publish date. Click a card for full detail.`
+                    : state.searchKind === "episode"
+                        ? `${state.searchResults.length} title match${state.searchResults.length === 1 ? "" : "es"} for "${escapeHtml(state.activeQuery)}". Click one to open full detail.`
+                        : `Search picked ${state.searchResults.length} episodes. Click one to open full detail.`;
+
+            if (!episodes.length && state.categoryBrowseId) {
+                content.innerHTML = `
+                    <div class="detail-actions">
+                        <p class="chip">${chipLabel}</p>
+                        <button class="ghost-button" id="overview-close-button" type="button">Close</button>
+                    </div>
+                    <p class="micro">No episodes match this category for the current membership mode.</p>
+                `;
+                document.getElementById("overview-close-button").addEventListener("click", () => {
+                    state.categoryBrowseId = null;
+                    panel.classList.remove("open");
+                });
+                return;
+            }
+
+            content.innerHTML = `
+                <div class="detail-actions">
+                    <p class="chip">${chipLabel}</p>
+                    <button class="ghost-button" id="overview-close-button" type="button">Close</button>
+                </div>
+                <p class="micro">${micro}</p>
+                <div class="trail-overview" id="trail-overview-list"></div>
+            `;
+            const list = document.getElementById("trail-overview-list");
+            episodes.forEach((episode, index) => {
+                const displayEpisode = hydrateEpisodeForDisplay(episode);
+                const browseCategoryId = state.categoryBrowseId || primaryCategoryId(displayEpisode);
+                const membershipRank = Math.max(0, categoryMembershipRank(displayEpisode, browseCategoryId));
+                const card = document.createElement("button");
+                card.className = `overview-card ${roleClassForRank(membershipRank)}`;
+                const thumb = youtubeThumbnailUrl(displayEpisode);
+                const themes = (displayEpisode.themes || []).slice(0, 3);
+                const summarySnippet = String(displayEpisode.summary || "").slice(0, 180);
+                card.innerHTML = `
+                    ${thumb ? `<img class="overview-thumb" src="${escapeHtml(thumb)}" alt="${escapeHtml(cleanTitle(displayEpisode))} thumbnail">` : ""}
+                    <strong>${index + 1}. ${escapeHtml(episodeNumberLabel(displayEpisode))}: ${escapeHtml(cleanTitle(displayEpisode))}</strong>
+                    <span class="micro" style="margin-top:5px;">${escapeHtml(categoryNameById(primaryCategoryId(displayEpisode)))} · ${escapeHtml(formatPublishDate(displayEpisode.publish_date))} <span class="role-pill">${escapeHtml(categoryRoleForRank(membershipRank))}</span></span>
+                    ${themes.length ? `<ul class="overview-themes">${themes.map((theme) => `<li>${escapeHtml(theme)}</li>`).join("")}</ul>` : ""}
+                    ${summarySnippet ? `<span class="micro" style="margin-top:8px;">${escapeHtml(summarySnippet)}${String(displayEpisode.summary || "").length > 180 ? "..." : ""}</span>` : ""}
+                `;
+                card.addEventListener("click", () => openEpisode(displayEpisode.episode_id, displayEpisode));
+                list.appendChild(card);
+            });
+            document.getElementById("overview-close-button").addEventListener("click", () => {
+                state.categoryBrowseId = null;
+                panel.classList.remove("open");
+            });
+        }
+
+        function showTooltip(event, episode) {
+            const tooltip = document.getElementById("tooltip");
+            const bullets = (episode.themes || []).slice(0, 3).map((theme) => `<li>${escapeHtml(theme)}</li>`).join("");
+            tooltip.innerHTML = `
+                <strong>${escapeHtml(episodeNumberLabel(episode))}: ${escapeHtml(cleanTitle(episode))}</strong>
+                <div class="micro">${escapeHtml(categoryNameById(primaryCategoryId(episode)))} · ${escapeHtml(formatPublishDate(episode.publish_date))}</div>
+                ${bullets ? `<ul>${bullets}</ul>` : '<div class="micro" style="margin-top:8px;">No key bullets yet.</div>'}
+            `;
+            tooltip.style.display = "block";
+            moveTooltip(event);
+        }
+
+        function moveTooltip(event) {
+            const tooltip = document.getElementById("tooltip");
+            tooltip.style.left = `${Math.min(window.innerWidth - 340, event.clientX + 16)}px`;
+            tooltip.style.top = `${Math.min(window.innerHeight - 220, event.clientY + 16)}px`;
+        }
+
+        function hideTooltip() {
+            document.getElementById("tooltip").style.display = "none";
+        }
+
+        async function openEpisode(episodeId, searchEpisode = null) {
+            const id = String(episodeId);
+            state.selectedEpisodeId = id;
+            renderMap();
+            const panel = document.getElementById("detail-panel");
+            panel.classList.add("open");
+            const episode = hydrateEpisodeForDisplay(state.episodeById.get(id) || searchEpisode || { episode_id: id });
+            renderDetail(episode, null, "", searchEpisode);
+        }
+
+        function renderDetail(episode, _transcriptLines, _transcriptError, searchEpisode) {
+            const content = document.getElementById("detail-content");
+            const embedUrl = youtubeEmbedUrl(episode);
+            const themes = (episode.themes || []).slice(0, 5).map((theme) => `<li>${escapeHtml(theme)}</li>`).join("");
+            const moments = ((searchEpisode && searchEpisode.matching_moments) || []).slice(0, 4);
+
+            content.innerHTML = `
+                <div class="detail-actions">
+                    ${state.searchResults.length || state.categoryBrowseId ? '<button class="ghost-button" id="back-to-trail-button" type="button">Back to list</button>' : '<span></span>'}
+                    <button class="ghost-button" id="close-detail-inline-button" type="button">Close</button>
+                </div>
+                <p class="detail-kicker">${escapeHtml(episodeNumberLabel(episode))}</p>
+                <h2 class="detail-title">${escapeHtml(cleanTitle(episode))}</h2>
+                <div class="detail-meta">${escapeHtml(categoryNameById(primaryCategoryId(episode)))} · ${escapeHtml(formatPublishDate(episode.publish_date))}</div>
+                ${embedUrl ? `<div class="video-frame"><iframe src="${embedUrl}" title="${escapeHtml(cleanTitle(episode))}" allowfullscreen></iframe></div>` : ""}
+                <div>
+                    ${episode.source_url ? `<a href="${escapeHtml(episode.source_url)}" target="_blank" rel="noopener">Open on YouTube</a>` : ""}
+                </div>
+                <div class="summary-box snap-notes-box">
+                    <h3>Snap Notes</h3>
+                    <p class="micro" style="margin-top:8px;">Quick takeaways first.</p>
+                    ${themes ? `<ul class="theme-list">${themes}</ul>` : '<p class="micro" style="margin-top:10px;">No key bullets yet.</p>'}
+                </div>
+                <div class="summary-box">
+                    <h3>Summary</h3>
+                    <p style="margin-top:10px;">${escapeHtml(episode.summary || "No summary snapshot yet.")}</p>
+                </div>
+                ${moments.length ? `
+                    <div class="summary-box">
+                        <h3>Matching Moments</h3>
+                        ${moments.map((moment) => `
+                            <div class="moment-card">
+                                <div class="micro">${escapeHtml(moment.start_label || "")}${moment.end_label ? ` - ${escapeHtml(moment.end_label)}` : ""}${moment.speaker ? ` · ${escapeHtml(moment.speaker)}` : ""}</div>
+                                <p style="margin-top:8px;">${escapeHtml(moment.text || "")}</p>
+                                ${moment.youtube_url_with_t ? `<a href="${escapeHtml(moment.youtube_url_with_t)}" target="_blank" rel="noopener">Open at timestamp</a>` : ""}
+                            </div>
+                        `).join("")}
+                    </div>
+                ` : ""}
+            `;
+            const closeInline = document.getElementById("close-detail-inline-button");
+            if (closeInline) {
+                closeInline.addEventListener("click", () => {
+                    document.getElementById("detail-panel").classList.remove("open");
+                });
+            }
+            const backButton = document.getElementById("back-to-trail-button");
+            if (backButton) {
+                backButton.addEventListener("click", () => {
+                    renderTrailOverview();
+                });
+            }
+        }
+
+        function filterEpisodesByTitle(episodes, query) {
+            const normalized = query.trim().toLowerCase();
+            if (!normalized) return [];
+            const matched = episodes.filter((episode) => String(episode.title || "").toLowerCase().includes(normalized));
+            matched.sort((a, b) => (Number(b.episode_number) || 0) - (Number(a.episode_number) || 0));
+            return matched;
+        }
+
+        function runEpisodeSearch() {
+            const query = document.getElementById("episode-search-query").value.trim();
+            if (!query) return;
+            state.categoryBrowseId = null;
+            state.searchKind = "episode";
+            state.activeQuery = query;
+            state.searchResults = filterEpisodesByTitle(state.episodes, query);
+            state.searchEpisodeIds = state.searchResults.map((episode) => String(episode.episode_id));
+            refreshSearchTrailCategoryIds();
+            renderAll();
+            if (state.searchResults.length) {
+                renderTrailOverview();
+            } else {
+                document.getElementById("search-results").innerHTML = `<p class="micro">No episode titles contain "${escapeHtml(query)}".</p>`;
+            }
+        }
+
+        async function loadCategories() {
+            const response = await fetch("data/categories.json");
+            const data = await response.json();
+            state.categories = data.categories || [];
+            state.taxonomyEmpty = !!data.taxonomy_empty;
+            const countEl = document.getElementById("stat-category-count");
+            if (countEl) countEl.textContent = String(state.categories.filter((entry) => entry.id !== "uncategorized").length);
+        }
+
+        async function loadCatalog() {
+            const response = await fetch("data/catalog.json");
+            const data = await response.json();
+            state.episodes = data.episodes || [];
+            state.episodeById = new Map(state.episodes.map((episode) => [String(episode.episode_id), episode]));
+            const countEl = document.getElementById("stat-episode-count");
+            if (countEl) countEl.textContent = String(state.episodes.length);
+        }
+
+        function wireMapInteractions() {
+            const svg = document.getElementById("map-svg");
+
+            function panSpeedMultiplier() {
+                return 1 + Math.pow(state.scale / MAP_SCALE_MAX, 1.15) * 5;
+            }
+
+            svg.addEventListener("wheel", (event) => {
+                event.preventDefault();
+                const delta = event.deltaY < 0 ? 1.08 : 0.92;
+                state.scale = Math.min(MAP_SCALE_MAX, Math.max(MAP_SCALE_MIN, state.scale * delta));
+                applyTransform();
+            }, { passive: false });
+
+            svg.addEventListener("pointerdown", (event) => {
+                if (event.button !== 0) return;
+                if (event.target.closest(".episode-node")) return;
+                if (event.target.closest(".timeline-band-label-group")) return;
+                if (event.target.closest(".cluster-label-group")) return;
+
+                if (state.mapViewMode === MAP_VIEW_TIMELINE && state.timelineZoomRegionMode) {
+                    state.marqueeDrag = {
+                        pointerId: event.pointerId,
+                        startCX: event.clientX,
+                        startCY: event.clientY,
+                    };
+                    svg.setPointerCapture(event.pointerId);
+                    return;
+                }
+
+                state.dragging = true;
+                state.dragStart = { x: event.clientX, y: event.clientY, tx: state.tx, ty: state.ty };
+                svg.classList.add("dragging");
+                svg.setPointerCapture(event.pointerId);
+            });
+
+            svg.addEventListener("pointermove", (event) => {
+                if (state.marqueeDrag && event.pointerId === state.marqueeDrag.pointerId) {
+                    updateMarqueeRect(event.clientX, event.clientY);
+                    return;
+                }
+                if (!state.dragging || !state.dragStart) return;
+                const svgEl = document.getElementById("map-svg");
+                const vb = svgEl.viewBox.baseVal;
+                const ratioX = vb.width / Math.max(svgEl.clientWidth, 1);
+                const ratioY = vb.height / Math.max(svgEl.clientHeight, 1);
+                const boost = panSpeedMultiplier();
+                state.tx = state.dragStart.tx + (event.clientX - state.dragStart.x) * ratioX * boost;
+                state.ty = state.dragStart.ty + (event.clientY - state.dragStart.y) * ratioY * boost;
+                applyTransform();
+            });
+
+            svg.addEventListener("pointerup", (event) => {
+                if (state.marqueeDrag && event.pointerId === state.marqueeDrag.pointerId) {
+                    finishMarqueeZoom(event);
+                    state.marqueeDrag = null;
+                    try { svg.releasePointerCapture(event.pointerId); } catch (_) {}
+                    return;
+                }
+                if (state.dragging) {
+                    state.dragging = false;
+                    state.dragStart = null;
+                    svg.classList.remove("dragging");
+                    try { svg.releasePointerCapture(event.pointerId); } catch (_) {}
+                }
+            });
+
+            svg.addEventListener("pointercancel", (event) => {
+                if (state.marqueeDrag && event.pointerId === state.marqueeDrag.pointerId) {
+                    state.marqueeDrag = null;
+                    hideMarqueeRect();
+                    try { svg.releasePointerCapture(event.pointerId); } catch (_) {}
+                    return;
+                }
+                if (state.dragging) {
+                    state.dragging = false;
+                    state.dragStart = null;
+                    svg.classList.remove("dragging");
+                    try { svg.releasePointerCapture(event.pointerId); } catch (_) {}
+                }
+            });
+        }
+
+        async function bootstrap() {
+            wireMapInteractions();
+            await Promise.all([loadCategories(), loadCatalog()]);
+            renderAll();
+            resetMap();
+        }
+
+        document.getElementById("episode-search-button").addEventListener("click", () => runEpisodeSearch());
+        document.getElementById("episode-search-query").addEventListener("keydown", (event) => {
+            if (event.key === "Enter") runEpisodeSearch();
+        });
+        document.getElementById("map-view-columns").addEventListener("click", () => {
+            if (state.mapViewMode === MAP_VIEW_COLUMNS) return;
+            state.mapViewMode = MAP_VIEW_COLUMNS;
+            state.timelineZoomRegionMode = false;
+            state.timelineFocusRange = null;
+            state.marqueeDrag = null;
+            hideMarqueeRect();
+            renderAll();
+            resetMap();
+        });
+        document.getElementById("map-view-timeline").addEventListener("click", () => {
+            if (state.mapViewMode === MAP_VIEW_TIMELINE) return;
+            state.mapViewMode = MAP_VIEW_TIMELINE;
+            renderAll();
+            resetMap();
+        });
+        document.getElementById("show-all-trails-button").addEventListener("click", () => {
+            state.mapTrailsExpanded = true;
+            state.categoryBrowseId = null;
+            renderMap();
+        });
+        document.getElementById("collapse-all-trails-button").addEventListener("click", () => {
+            state.mapTrailsExpanded = false;
+            state.categoryBrowseId = null;
+            renderMap();
+        });
+        document.getElementById("show-primary-only-button").addEventListener("click", () => {
+            if (state.categoryMembershipMode === CATEGORY_MEMBERSHIP_PRIMARY) return;
+            state.categoryMembershipMode = CATEGORY_MEMBERSHIP_PRIMARY;
+            renderAll();
+            resetMap();
+            if (state.categoryBrowseId) renderTrailOverview();
+        });
+        document.getElementById("show-all-category-episodes-button").addEventListener("click", () => {
+            if (state.categoryMembershipMode === CATEGORY_MEMBERSHIP_ALL) return;
+            state.categoryMembershipMode = CATEGORY_MEMBERSHIP_ALL;
+            renderAll();
+            resetMap();
+            if (state.categoryBrowseId) renderTrailOverview();
+        });
+        document.getElementById("timeline-labels-toggle").addEventListener("click", () => {
+            state.timelineShowLabels = !state.timelineShowLabels;
+            syncTimelineMapTools();
+            renderMap();
+        });
+        document.getElementById("timeline-zoom-region-toggle").addEventListener("click", () => {
+            state.timelineZoomRegionMode = !state.timelineZoomRegionMode;
+            if (!state.timelineZoomRegionMode) state.timelineFocusRange = null;
+            state.marqueeDrag = null;
+            hideMarqueeRect();
+            syncTimelineMapTools();
+            renderMap();
+        });
+        document.getElementById("zoom-in-button").addEventListener("click", () => {
+            state.scale = Math.min(MAP_SCALE_MAX, state.scale * 1.16);
+            applyTransform();
+        });
+        document.getElementById("zoom-out-button").addEventListener("click", () => {
+            state.scale = Math.max(MAP_SCALE_MIN, state.scale * 0.86);
+            applyTransform();
+        });
+        document.getElementById("reset-map-button").addEventListener("click", () => {
+            state.timelineFocusRange = null;
+            state.searchEpisodeIds = [];
+            state.searchResults = [];
+            state.searchKind = "";
+            state.searchTrailCategoryIds = null;
+            state.categoryBrowseId = null;
+            state.mapTrailsExpanded = false;
+            state.categoryMembershipMode = CATEGORY_MEMBERSHIP_PRIMARY;
+            state.activeQuery = "";
+            state.selectedEpisodeId = "";
+            document.getElementById("episode-search-query").value = "";
+            document.getElementById("detail-panel").classList.remove("open");
+            renderAll();
+            resetMap();
+        });
+        document.getElementById("close-detail-button").addEventListener("click", () => {
+            if (state.selectedEpisodeId && (state.searchResults.length || state.categoryBrowseId)) {
+                renderTrailOverview();
+                return;
+            }
+            document.getElementById("detail-panel").classList.remove("open");
+        });
+        document.querySelector(".map-stage").addEventListener("click", (event) => {
+            if (state.ignoreNextMapStageClick) {
+                state.ignoreNextMapStageClick = false;
+                return;
+            }
+            const target = event.target;
+            if (!(target instanceof Element)) return;
+            if (target.closest(".episode-node")) return;
+            if (state.selectedEpisodeId && (state.searchResults.length || state.categoryBrowseId)) {
+                renderTrailOverview();
+            }
+        });
+        let resizeMapTimer = null;
+        window.addEventListener("resize", () => {
+            if (resizeMapTimer) clearTimeout(resizeMapTimer);
+            resizeMapTimer = setTimeout(() => {
+                resizeMapTimer = null;
+                resetMap();
+            }, 150);
+        });
+
+        bootstrap();
+    </script>
+</body>
+</html>

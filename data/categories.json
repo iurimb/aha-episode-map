@@ -1,0 +1,72 @@
+{
+  "generated_at_utc": "2026-10-26T17:21:57.291511+00:00",
+  "taxonomy_empty": false,
+  "categories": [
+    {
+      "id": "jewish_history_diaspora",
+      "name": "Jewish Realities and Diaspora",
+      "description": "Present-day Jewish communal life, diaspora debates, identity politics among Jews outside Israel, antisemitism as it affects Jewish communities today, and comparative perspectives without centering Israeli state politics as the main frame. Use for episodes primarily about how Jews live and argue right now across countries—not deep halakhic/theological study (see Jewish History, Philosophy and Theology) and not US foreign policy toward Israel as the main frame (see US-Israel Relations).",
+      "episode_count": 23
+    },
+    {
+      "id": "israeli_history_zionism_politics",
+      "name": "Israeli History, Zionism, Israeli Political and Geopolitical Realities",
+      "description": "The history of Zionism and the modern State of Israel, founding ideologies, internal Israeli politics, society and culture, judicial reform, Haredi integration, electoral dynamics, and the long arc of Israeli statehood. Use this when the frame is Israeli political and historical reality, not a specific war or the conflict with Palestinians.",
+      "episode_count": 52
+    },
+    {
+      "id": "israeli_palestinian_conflict_history",
+      "name": "Israeli-Palestinian/Arab Conflict",
+      "description": "The historical arc of the Israeli-Palestinian conflict from the late Ottoman and Mandate periods through 1948, 1967, the Oslo era, the two-state debate, the settlements question, and recurring failed peacemaking. Use this for episodes framed around the conflict's historical roots and political-territorial questions, not for events specific to the post-October-7 war.",
+      "episode_count": 39
+    },
+    {
+      "id": "jewish_philosophy_theology",
+      "name": "Jewish History, Philosophy and Theology",
+      "description": "Jewish intellectual history, religious philosophy, theology, textual interpretation, halakha, prayer, and Jewish meaning—including holidays as framed through Jewish religious tradition (Passover, Tisha B'Av, Yom Kippur, Yom HaShoah, Yom HaZikaron, etc.). Use when the episode's spine is Jewish ideas, beliefs, texts, or religious practice—not general diaspora sociology unless tied to theology.",
+      "episode_count": 25
+    },
+    {
+      "id": "october_7_hamas_war",
+      "name": "Israel-Hamas War, October 7th and Hostages",
+      "description": "The October 7 attacks, the ensuing Gaza war, hostages and hostage deals, Hamas's strategy and conduct, the humanitarian situation in Gaza, and the social, political, and strategic consequences inside Israel. Use this when the dominant frame is the current war with Hamas and its aftermath, not generic conflict history.",
+      "episode_count": 41
+    },
+    {
+      "id": "military_analysis",
+      "name": "Military Analysis (Operational POV)",
+      "description": "Operational, tactical, and doctrinal military analysis of contemporary wars and conflicts, often with guests who are professional military analysts (e.g. John Spencer, Andrew Fox). Urban warfare, force structure, doctrine, air defense, and battlefield assessments belong here. Use this when the lens is professional military analysis rather than political, historical, or ideological.",
+      "episode_count": 8
+    },
+    {
+      "id": "antizionism",
+      "name": "Antizionism and Antisemitism",
+      "description": "Critiques and ideologies that target the legitimacy of Zionism or the State of Israel: campus and progressive antizionism, anti-colonial and settler-colonial framings, BDS, 'from the river to the sea,' and the relationship between antizionism and antisemitism. Use this when antizionism as a phenomenon is the central subject, not when it is merely mentioned.",
+      "episode_count": 44
+    },
+    {
+      "id": "us_israel_jewish_relations",
+      "name": "US-Israel Relations",
+      "description": "US foreign policy, diplomacy, military aid, and strategic alignment between the United States and the State of Israel. Includes shifts across administrations (Biden, Trump), Congress, and Washington debates where the primary lens is state-to-state relations—not Jewish communal identity debates unless they directly determine policy outcomes.",
+      "episode_count": 27
+    },
+    {
+      "id": "islamism_philosophy_history",
+      "name": "Islamism: Philosophy & History",
+      "description": "The intellectual, theological, and historical roots of Islamist movements: Muslim Brotherhood, Salafism, Khomeinism, Sayyid Qutb, the Iranian revolution as ideology, and the Mukawama / resistance axis understood as a worldview. Use this for philosophical and historical treatments of Islamism. The Iran mukawama episode belongs here rather than in 'Iran & Its Proxies'.",
+      "episode_count": 17
+    },
+    {
+      "id": "iran_proxies",
+      "name": "Iran & its proxies and US/Israel-Iran Wars",
+      "description": "Contemporary, non-philosophical coverage of Iran's regional strategy and the militia network it sponsors: Hezbollah, Houthis, Iraqi militias, IRGC operations, the Iranian nuclear program, and direct Israel-Iran military escalation. Reserve this for operational and political analysis; deeper philosophical or ideological treatments of the resistance axis belong in 'Islamism: Philosophy & History'.",
+      "episode_count": 28
+    },
+    {
+      "id": "uncategorized",
+      "name": "Uncategorized",
+      "description": "Episodes that do not yet fit any human-defined category. Use only as a last resort when no other category is genuinely appropriate.",
+      "episode_count": 1
+    }
+  ]
+}
