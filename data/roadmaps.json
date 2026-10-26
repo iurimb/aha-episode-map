@@ -1,0 +1,633 @@
+{
+  "generated_at_utc": "2026-10-26T20:21:11.518059+00:00",
+  "kind": "recommended_collections",
+  "collections": [
+    {
+      "id": "conflict_primer",
+      "title": "The Essential Conflict Primer",
+      "note": "Start with the historical roots and recurring political questions.",
+      "episodes": [
+        {
+          "episode_id": "fT7uLSLunL0",
+          "title": "An Extraordinary Introduction to the Birth of Israel and the Arab-Israeli Conflict",
+          "episode_number": null,
+          "publish_date": "20231218",
+          "source_url": "https://www.youtube.com/watch?v=fT7uLSLunL0&pp=ygUlSGF2aXYgUmV0dGlnIEd1ciBwb2RjYXN0cyBhbmQgY2xhc3Nlcw%3D%3D",
+          "duration_label": "1:40:19"
+        },
+        {
+          "episode_id": "fPJ5y4FB4u0",
+          "title": "Episode 80: Who is Hamas and what do they want?",
+          "episode_number": 80,
+          "publish_date": "20260119",
+          "source_url": "https://www.youtube.com/watch?v=fPJ5y4FB4u0",
+          "duration_label": "10:29"
+        },
+        {
+          "episode_id": "iWaFJHYYXkQ",
+          "title": "Episode 90: Is it \"fascist\" to believe a state can belong to a specific people?",
+          "episode_number": 90,
+          "publish_date": "20260215",
+          "source_url": "https://www.youtube.com/watch?v=iWaFJHYYXkQ",
+          "duration_label": "15:58"
+        },
+        {
+          "episode_id": "icKgxmX1Zrs",
+          "title": "Episode 55: The real war is not in Gaza, with Dr. Einat Wilf",
+          "episode_number": 55,
+          "publish_date": "20251029",
+          "source_url": "https://www.youtube.com/watch?v=icKgxmX1Zrs",
+          "duration_label": "1:11:36"
+        },
+        {
+          "episode_id": "QlK2mfYYm4U",
+          "title": "The Great Misinterpretation: How Palestinians View Israel - Haviv Rettig Gur",
+          "episode_number": null,
+          "publish_date": "20240314",
+          "source_url": "https://www.youtube.com/watch?v=QlK2mfYYm4U&pp=ygUlSGF2aXYgUmV0dGlnIEd1ciBwb2RjYXN0cyBhbmQgY2xhc3Nlcw%3D%3D",
+          "duration_label": ""
+        },
+        {
+          "episode_id": "rOTOxur4AMo",
+          "title": "Episode 89: Who benefits from continuing the Israeli-Palestinian conflict?",
+          "episode_number": 89,
+          "publish_date": "20260212",
+          "source_url": "https://www.youtube.com/watch?v=rOTOxur4AMo",
+          "duration_label": "14:30"
+        }
+      ]
+    },
+    {
+      "id": "october_7",
+      "title": "October 7, Hamas, Hostages",
+      "note": "Follow episodes centered on the attack, hostage crisis, and war.",
+      "episodes": [
+        {
+          "episode_id": "aznvxeLEuOw",
+          "title": "Episode 38: What will it take to defeat Hamas? With Prof. John Spencer",
+          "episode_number": 38,
+          "publish_date": "20250827",
+          "source_url": "https://www.youtube.com/watch?v=aznvxeLEuOw",
+          "duration_label": "1:12:55"
+        },
+        {
+          "episode_id": "JkV4U9b57kc",
+          "title": "Episode 5: When your family is taken hostage",
+          "episode_number": 5,
+          "publish_date": "20250313",
+          "source_url": "https://www.youtube.com/watch?v=JkV4U9b57kc&pp=ygUXYXNrIGhhdml2IGFueXRoaW5nIGVwIDU%3D",
+          "duration_label": "11:49"
+        },
+        {
+          "episode_id": "uizXJbcp4W0",
+          "title": "Episode 49: Finding hope in the tunnel of Hamas, with Eli Sharabi",
+          "episode_number": 49,
+          "publish_date": "20251008",
+          "source_url": "https://www.youtube.com/watch?v=uizXJbcp4W0",
+          "duration_label": "2:09:37"
+        },
+        {
+          "episode_id": "VYd35Mu77v8",
+          "title": "Episode 47: Building a new Gaza, with Ahmed Fouad Alkhatib",
+          "episode_number": 47,
+          "publish_date": "20251003",
+          "source_url": "https://www.youtube.com/watch?v=VYd35Mu77v8",
+          "duration_label": "2:09:37"
+        },
+        {
+          "episode_id": "XstnML-MlV8",
+          "title": "Episode 58: Rebuilding after disaster with ex-hostage Tal Shoham",
+          "episode_number": 58,
+          "publish_date": "20251109",
+          "source_url": "https://www.youtube.com/watch?v=XstnML-MlV8",
+          "duration_label": "2:09:37"
+        },
+        {
+          "episode_id": "7Pj9-YG_vXY",
+          "title": "Zionism & Jihadism (Making Sense #422)",
+          "episode_number": null,
+          "publish_date": "20250619",
+          "source_url": "https://www.youtube.com/watch?v=7Pj9-YG_vXY&pp=ygUlSGF2aXYgUmV0dGlnIEd1ciBwb2RjYXN0cyBhbmQgY2xhc3Nlcw%3D%3D",
+          "duration_label": "2:15:20"
+        }
+      ]
+    },
+    {
+      "id": "iran_proxies",
+      "title": "Iran And Its Proxies",
+      "note": "A regional trail across Iran, Hezbollah, and direct escalation.",
+      "episodes": [
+        {
+          "episode_id": "YvRDJhPUpjU",
+          "title": "Episode 93: How to win Iran's forever war",
+          "episode_number": 93,
+          "publish_date": "20260225",
+          "source_url": "https://www.youtube.com/watch?v=YvRDJhPUpjU",
+          "duration_label": "2:06:45"
+        },
+        {
+          "episode_id": "_CgX7li5P8g",
+          "title": "Episode 96: The first war Israel fought in English, with Yaakov Katz",
+          "episode_number": 96,
+          "publish_date": "20260309",
+          "source_url": "https://www.youtube.com/watch?v=_CgX7li5P8g",
+          "duration_label": "56:26"
+        },
+        {
+          "episode_id": "A6BIi1aiiVQ",
+          "title": "Israel Confronts Evil in Iran | Haviv Rettig Gur and Eli Lake",
+          "episode_number": null,
+          "publish_date": "20250613",
+          "source_url": "https://www.youtube.com/watch?v=A6BIi1aiiVQ&pp=ygUlSGF2aXYgUmV0dGlnIEd1ciBwb2RjYXN0cyBhbmQgY2xhc3Nlcw%3D%3D",
+          "duration_label": "1:21:11"
+        },
+        {
+          "episode_id": "Hh-dZzB7Rnk",
+          "title": "Episode 23: Iran bows out",
+          "episode_number": 23,
+          "publish_date": "20250624",
+          "source_url": "https://www.youtube.com/watch?v=Hh-dZzB7Rnk&pp=ygUTYXNrIGhhdml2IGFueXRoaW5nIA%3D%3D",
+          "duration_label": "46:03"
+        },
+        {
+          "episode_id": "DTDASyHJ25A",
+          "title": "Episode 91: Is the Iran war about China? A conversation with Melissa Chen",
+          "episode_number": 91,
+          "publish_date": "20260218",
+          "source_url": "https://www.youtube.com/watch?v=DTDASyHJ25A",
+          "duration_label": "1:01:08"
+        }
+      ]
+    },
+    {
+      "id": "diaspora_life",
+      "title": "Jewish Life In The Diaspora",
+      "note": "For newcomers to the diaspora and antisemitism conversations.",
+      "episodes": [
+        {
+          "episode_id": "izPkLQNRZDA",
+          "title": "Episode 2: The lost history of American Jews",
+          "episode_number": 2,
+          "publish_date": "20250218",
+          "source_url": "https://www.youtube.com/watch?v=izPkLQNRZDA&pp=ygUTYXNrIGhhdml2IGFueXRoaW5nIA%3D%3D",
+          "duration_label": "43:39"
+        },
+        {
+          "episode_id": "evKbREUqrsg",
+          "title": "Episode 63: New York in the age of Tucker and Mamdani, with Noam Dworman",
+          "episode_number": 63,
+          "publish_date": "20251125",
+          "source_url": "https://www.youtube.com/watch?v=evKbREUqrsg",
+          "duration_label": "55:56"
+        },
+        {
+          "episode_id": "4g25JdMLh10",
+          "title": "Episode 85: How knowing your story makes you invincible, with Noam Weissman",
+          "episode_number": 85,
+          "publish_date": "20260131",
+          "source_url": "https://www.youtube.com/watch?v=4g25JdMLh10",
+          "duration_label": "58:30"
+        },
+        {
+          "episode_id": "mtm9MtEp5ig",
+          "title": "Episode 88: America's \"24% problem\" with young antisemitism, with Jonah Platt",
+          "episode_number": 88,
+          "publish_date": "20260207",
+          "source_url": "https://www.youtube.com/watch?v=mtm9MtEp5ig",
+          "duration_label": "55:18"
+        },
+        {
+          "episode_id": "1sPAPTXTyU4",
+          "title": "Episode 52: Why do people hate Jews, with Dara Horn",
+          "episode_number": 52,
+          "publish_date": "20251017",
+          "source_url": "https://www.youtube.com/watch?v=1sPAPTXTyU4",
+          "duration_label": "1:11:35"
+        }
+      ]
+    },
+    {
+      "id": "campus_antizionism",
+      "title": "Campus Antizionism",
+      "note": "How antizionism shows up on campus and in progressive frames.",
+      "episodes": [
+        {
+          "episode_id": "7qO7afN7YBc",
+          "title": "Episode 68: Antizionism is inherently violent, with Adam Louis-Klein",
+          "episode_number": 68,
+          "publish_date": "20251217",
+          "source_url": "https://www.youtube.com/watch?v=7qO7afN7YBc",
+          "duration_label": "1:01:46"
+        },
+        {
+          "episode_id": "HyJpVAPWhzI",
+          "title": "Episode 66: Do BDS campaigns help Palestinians?",
+          "episode_number": 66,
+          "publish_date": "20251205",
+          "source_url": "https://www.youtube.com/watch?v=HyJpVAPWhzI",
+          "duration_label": "12:30"
+        },
+        {
+          "episode_id": "VHqZrrpwFRo",
+          "title": "Episode 60: Does it matter what the world thinks? A conversation with Dr. Tal Becker.",
+          "episode_number": 60,
+          "publish_date": "20251116",
+          "source_url": "https://www.youtube.com/watch?v=VHqZrrpwFRo",
+          "duration_label": "48:09"
+        },
+        {
+          "episode_id": "qe_ppEHXs3w",
+          "title": "Episode 37: The genocidal claim of genocide with Adam Louis-Klein",
+          "episode_number": 37,
+          "publish_date": "20250822",
+          "source_url": "https://www.youtube.com/watch?v=qe_ppEHXs3w",
+          "duration_label": "2:09:37"
+        },
+        {
+          "episode_id": "eM9FYGTgU3Y",
+          "title": "Episode 8: Prof. Alexander Yakobson on what it means to \"decolonize Palestine\"",
+          "episode_number": 8,
+          "publish_date": "20250403",
+          "source_url": "https://www.youtube.com/watch?v=eM9FYGTgU3Y&pp=ygUTYXNrIGhhdml2IGFueXRoaW5nINIHCQnDCQGHKiGM7w%3D%3D",
+          "duration_label": "52:39"
+        },
+        {
+          "episode_id": "sEil7IaAyOU",
+          "title": "Episode 76: How elites drive Jew-hatred, with Hussein Aboubakr Mansour",
+          "episode_number": 76,
+          "publish_date": "20260106",
+          "source_url": "https://www.youtube.com/watch?v=sEil7IaAyOU",
+          "duration_label": "1:14:36"
+        },
+        {
+          "episode_id": "Dm51dcsKGWU",
+          "title": "Episode 64: The Soviet roots of today's antizionism, with Izabella Tabarovsky",
+          "episode_number": 64,
+          "publish_date": "20251128",
+          "source_url": "https://www.youtube.com/watch?v=Dm51dcsKGWU",
+          "duration_label": "1:19:26"
+        }
+      ]
+    },
+    {
+      "id": "us_israel_alliance",
+      "title": "US-Israel Alliance",
+      "note": "Washington, aid, and the state-to-state relationship.",
+      "episodes": [
+        {
+          "episode_id": "K5vs-D3G-_k",
+          "title": "Episode 71: Why the heck does America support Israel?",
+          "episode_number": 71,
+          "publish_date": "20251225",
+          "source_url": "https://www.youtube.com/watch?v=K5vs-D3G-_k",
+          "duration_label": "15:04"
+        },
+        {
+          "episode_id": "MqCivXl_14o",
+          "title": "Episode 73: Is military aid to Israel a good deal for America?",
+          "episode_number": 73,
+          "publish_date": "20251230",
+          "source_url": "https://www.youtube.com/watch?v=MqCivXl_14o",
+          "duration_label": "2:09:37"
+        },
+        {
+          "episode_id": "aETPJVC9Nuw",
+          "title": "Episode 9: Did Biden derail Saudi normalization?",
+          "episode_number": 9,
+          "publish_date": "20250410",
+          "source_url": "https://www.youtube.com/watch?v=aETPJVC9Nuw&pp=ygUTYXNrIGhhdml2IGFueXRoaW5nIA%3D%3D",
+          "duration_label": "48:44"
+        },
+        {
+          "episode_id": "v5LI490DDtg",
+          "title": "125: Did Netanyahu misread Trump? With Ross Douthat",
+          "episode_number": 125,
+          "publish_date": "20260621",
+          "source_url": "https://www.youtube.com/watch?v=v5LI490DDtg",
+          "duration_label": "1:07:16"
+        }
+      ]
+    },
+    {
+      "id": "zionism_founding",
+      "title": "Zionism And The Founding of Israel",
+      "note": "The ideological and historical founding of the state.",
+      "episodes": [
+        {
+          "episode_id": "fc_nwfk0FfU",
+          "title": "Episode 1: The Untold Story of Herzl's Journey to Zionism",
+          "episode_number": 1,
+          "publish_date": "20250213",
+          "source_url": "https://www.youtube.com/watch?v=fc_nwfk0FfU&pp=ygUTYXNrIGhhdml2IGFueXRoaW5nIA%3D%3D",
+          "duration_label": "50:44"
+        },
+        {
+          "episode_id": "fT7uLSLunL0",
+          "title": "An Extraordinary Introduction to the Birth of Israel and the Arab-Israeli Conflict",
+          "episode_number": null,
+          "publish_date": "20231218",
+          "source_url": "https://www.youtube.com/watch?v=fT7uLSLunL0&pp=ygUlSGF2aXYgUmV0dGlnIEd1ciBwb2RjYXN0cyBhbmQgY2xhc3Nlcw%3D%3D",
+          "duration_label": "1:40:19"
+        },
+        {
+          "episode_id": "cXqUwJI7izI",
+          "title": "108: How personal grief built a nation",
+          "episode_number": 108,
+          "publish_date": "20260420",
+          "source_url": "https://www.youtube.com/watch?v=cXqUwJI7izI",
+          "duration_label": "29:22"
+        },
+        {
+          "episode_id": "hseObsOIFco",
+          "title": "Episode 41: The rise and fall of Ottoman Jewry with Dr. Hay Eytan Cohen Yanarocak",
+          "episode_number": 41,
+          "publish_date": "20250907",
+          "source_url": "https://www.youtube.com/watch?v=hseObsOIFco",
+          "duration_label": "1:18:02"
+        },
+        {
+          "episode_id": "AonXnv-K7Mk",
+          "title": "Episode 98: What Israel’s founding fathers knew about terrorism, with Dr. Bruce Hoffman",
+          "episode_number": 98,
+          "publish_date": "20260315",
+          "source_url": "https://www.youtube.com/watch?v=AonXnv-K7Mk",
+          "duration_label": "58:04"
+        },
+        {
+          "episode_id": "4g25JdMLh10",
+          "title": "Episode 85: How knowing your story makes you invincible, with Noam Weissman",
+          "episode_number": 85,
+          "publish_date": "20260131",
+          "source_url": "https://www.youtube.com/watch?v=4g25JdMLh10",
+          "duration_label": "58:30"
+        }
+      ]
+    },
+    {
+      "id": "israeli_politics_now",
+      "title": "Contemporary Israeli Politics",
+      "note": "Internal politics, elections, and the judicial-reform fight.",
+      "episodes": [
+        {
+          "episode_id": "VN1-rMpTnJU",
+          "title": "Haviv Rettig Gur Answers 18 Questions on Hamas, Western Media, and Netanyahu",
+          "episode_number": null,
+          "publish_date": "20240919",
+          "source_url": "https://www.youtube.com/watch?v=VN1-rMpTnJU&pp=ygUlSGF2aXYgUmV0dGlnIEd1ciBwb2RjYXN0cyBhbmQgY2xhc3Nlcw%3D%3D",
+          "duration_label": "1:23:17"
+        },
+        {
+          "episode_id": "lq4pZXRw_VE",
+          "title": "Episode 7 - Judicial Reform: Is tribalism eating Israeli democracy alive?",
+          "episode_number": 7,
+          "publish_date": "20250328",
+          "source_url": "https://www.youtube.com/watch?v=lq4pZXRw_VE&pp=ygUTYXNrIGhhdml2IGFueXRoaW5nIA%3D%3D",
+          "duration_label": "52:38"
+        },
+        {
+          "episode_id": "2GYWSCBcuSc",
+          "title": "What Matters Now to Haviv Rettig Gur: Reasons for optimism in Israelâ€™s 77th year",
+          "episode_number": null,
+          "publish_date": "20240517",
+          "source_url": "https://www.youtube.com/watch?v=2GYWSCBcuSc&pp=ygUlSGF2aXYgUmV0dGlnIEd1ciBwb2RjYXN0cyBhbmQgY2xhc3Nlcw%3D%3D",
+          "duration_label": ""
+        }
+      ]
+    },
+    {
+      "id": "jewish_thought",
+      "title": "Jewish Thought And Holidays",
+      "note": "Texts, holidays, and Jewish meaning rather than current events.",
+      "episodes": [
+        {
+          "episode_id": "OxoAKpVYVgc",
+          "title": "Episode 84: Why soldiers wept when Ran came home, lessons from Tu Bishvat",
+          "episode_number": 84,
+          "publish_date": "20260129",
+          "source_url": "https://www.youtube.com/watch?v=OxoAKpVYVgc",
+          "duration_label": "47:26"
+        },
+        {
+          "episode_id": "urT2Hky_mrc",
+          "title": "Bonus episode: This Passover, we find our freedom",
+          "episode_number": null,
+          "publish_date": "20250411",
+          "source_url": "https://www.youtube.com/watch?v=urT2Hky_mrc&pp=ygUTYXNrIGhhdml2IGFueXRoaW5nIA%3D%3D",
+          "duration_label": "16:43"
+        },
+        {
+          "episode_id": "YBjFkZfifSo",
+          "title": "Episode 48: Two years to October 7",
+          "episode_number": 48,
+          "publish_date": "20251006",
+          "source_url": "https://www.youtube.com/watch?v=YBjFkZfifSo",
+          "duration_label": "2:09:37"
+        },
+        {
+          "episode_id": "cXqUwJI7izI",
+          "title": "108: How personal grief built a nation",
+          "episode_number": 108,
+          "publish_date": "20260420",
+          "source_url": "https://www.youtube.com/watch?v=cXqUwJI7izI",
+          "duration_label": "29:22"
+        },
+        {
+          "episode_id": "ajrxcHGLaNk",
+          "title": "Episode 15: Jerusalem Day, a modern redemption story",
+          "episode_number": 15,
+          "publish_date": "20250526",
+          "source_url": "https://www.youtube.com/watch?v=ajrxcHGLaNk&pp=ygUTYXNrIGhhdml2IGFueXRoaW5nIA%3D%3D",
+          "duration_label": "19:49"
+        },
+        {
+          "episode_id": "g9KxFjcR3jc",
+          "title": "Episode 44: Fateful choices to make in the new year, a comment for Rosh Hashanah",
+          "episode_number": 44,
+          "publish_date": "20250922",
+          "source_url": "https://www.youtube.com/watch?v=g9KxFjcR3jc",
+          "duration_label": "2:09:37"
+        },
+        {
+          "episode_id": "7u51bFuX7jo",
+          "title": "Episode 67: Miracles in the dark. A response to Bondi.",
+          "episode_number": 67,
+          "publish_date": "20251215",
+          "source_url": "https://www.youtube.com/watch?v=7u51bFuX7jo",
+          "duration_label": "48:05"
+        }
+      ]
+    },
+    {
+      "id": "islamism_worldview",
+      "title": "Islamism As A Worldview",
+      "note": "The intellectual and historical roots of Islamist movements.",
+      "episodes": [
+        {
+          "episode_id": "YvRDJhPUpjU",
+          "title": "Episode 93: How to win Iran's forever war",
+          "episode_number": 93,
+          "publish_date": "20260225",
+          "source_url": "https://www.youtube.com/watch?v=YvRDJhPUpjU",
+          "duration_label": "2:06:45"
+        },
+        {
+          "episode_id": "XXH6E7586qk",
+          "title": "Episode 95: The idea that broke the Middle East, with Dr. Micah Goodman",
+          "episode_number": 95,
+          "publish_date": "20260305",
+          "source_url": "https://www.youtube.com/watch?v=XXH6E7586qk",
+          "duration_label": "1:06:16"
+        },
+        {
+          "episode_id": "fPJ5y4FB4u0",
+          "title": "Episode 80: Who is Hamas and what do they want?",
+          "episode_number": 80,
+          "publish_date": "20260119",
+          "source_url": "https://www.youtube.com/watch?v=fPJ5y4FB4u0",
+          "duration_label": "10:29"
+        },
+        {
+          "episode_id": "X5TxySz39a4",
+          "title": "Episode 34: My life in Al-Qaeda, a conversation with Aimen Dean",
+          "episode_number": 34,
+          "publish_date": "20250806",
+          "source_url": "https://www.youtube.com/watch?v=X5TxySz39a4",
+          "duration_label": "2:09:37"
+        },
+        {
+          "episode_id": "H2Il3A5mlKY",
+          "title": "Episode 86: Alliances and rivalries in a new Middle East, with Dan Schueftan",
+          "episode_number": 86,
+          "publish_date": "20260202",
+          "source_url": "https://www.youtube.com/watch?v=H2Il3A5mlKY",
+          "duration_label": "1:11:57"
+        },
+        {
+          "episode_id": "rOTOxur4AMo",
+          "title": "Episode 89: Who benefits from continuing the Israeli-Palestinian conflict?",
+          "episode_number": 89,
+          "publish_date": "20260212",
+          "source_url": "https://www.youtube.com/watch?v=rOTOxur4AMo",
+          "duration_label": "14:30"
+        }
+      ]
+    },
+    {
+      "id": "hezbollah_north",
+      "title": "Hezbollah And The North",
+      "note": "Lebanon, the northern front, and Hezbollah as a fighting force.",
+      "episodes": [
+        {
+          "episode_id": "gGWLDzAVfS0",
+          "title": "Episode 17: The Gaza war began 25 years ago, a conversation with Matti Friedman",
+          "episode_number": 17,
+          "publish_date": "20250609",
+          "source_url": "https://www.youtube.com/watch?v=gGWLDzAVfS0&pp=ygUTYXNrIGhhdml2IGFueXRoaW5nIA%3D%3D",
+          "duration_label": "52:25"
+        },
+        {
+          "episode_id": "xq_d2PxyYzs",
+          "title": "Episode 83: From ideology to narcotics, Hezbollah's business model, with Matt Levitt",
+          "episode_number": 83,
+          "publish_date": "20260126",
+          "source_url": "https://www.youtube.com/watch?v=xq_d2PxyYzs",
+          "duration_label": "48:32"
+        }
+      ]
+    },
+    {
+      "id": "urban_warfare_gaza",
+      "title": "Urban Warfare In Gaza",
+      "note": "Operational and doctrinal looks at fighting in Gaza.",
+      "episodes": [
+        {
+          "episode_id": "nXdlZ8zkuh0",
+          "title": "Episode 3: John Spencer on why Israel hasn't yet won the war in Gaza",
+          "episode_number": 3,
+          "publish_date": "20250226",
+          "source_url": "https://www.youtube.com/watch?v=nXdlZ8zkuh0&pp=ygUTYXNrIGhhdml2IGFueXRoaW5nIA%3D%3D",
+          "duration_label": "54:09"
+        },
+        {
+          "episode_id": "aznvxeLEuOw",
+          "title": "Episode 38: What will it take to defeat Hamas? With Prof. John Spencer",
+          "episode_number": 38,
+          "publish_date": "20250827",
+          "source_url": "https://www.youtube.com/watch?v=aznvxeLEuOw",
+          "duration_label": "1:12:55"
+        },
+        {
+          "episode_id": "GFi8VLooSUY",
+          "title": "Episode 97: Can America and Israel finish the job? A conversation with John Spencer.",
+          "episode_number": 97,
+          "publish_date": "20260311",
+          "source_url": "https://www.youtube.com/watch?v=GFi8VLooSUY",
+          "duration_label": "57:16"
+        },
+        {
+          "episode_id": "gIiNK9zSXi8",
+          "title": "Episode 13: John Spencer on war, morality, politics and the fight for the future.",
+          "episode_number": 13,
+          "publish_date": "20250513",
+          "source_url": "https://www.youtube.com/watch?v=gIiNK9zSXi8&pp=ygUYYXNrIGhhdml2IGFueXRoaW5nIGVwIDEz",
+          "duration_label": "1:20:04"
+        },
+        {
+          "episode_id": "wOnOjXmUpOc",
+          "title": "Episode 77: Did Israel intentionally target civilians in Gaza?",
+          "episode_number": 77,
+          "publish_date": "20260109",
+          "source_url": "https://www.youtube.com/watch?v=wOnOjXmUpOc",
+          "duration_label": "12:42"
+        }
+      ]
+    },
+    {
+      "id": "antisemitism_after_oct7",
+      "title": "Antisemitism After October 7",
+      "note": "What changed for Jews outside Israel after the attack.",
+      "episodes": [
+        {
+          "episode_id": "KKWPKp3GzaE",
+          "title": "Episode 39: Fear and loathing in the diaspora, live in Oslo with Bjørn Gabrielsen.",
+          "episode_number": 39,
+          "publish_date": "20250831",
+          "source_url": "https://www.youtube.com/watch?v=KKWPKp3GzaE",
+          "duration_label": "1:58:59"
+        },
+        {
+          "episode_id": "mtm9MtEp5ig",
+          "title": "Episode 88: America's \"24% problem\" with young antisemitism, with Jonah Platt",
+          "episode_number": 88,
+          "publish_date": "20260207",
+          "source_url": "https://www.youtube.com/watch?v=mtm9MtEp5ig",
+          "duration_label": "55:18"
+        },
+        {
+          "episode_id": "R1vwnqjqMRI",
+          "title": "Haviv Rettig Gur: his trip to the U.S, talking with American Jews, antisemitism on college campuses",
+          "episode_number": null,
+          "publish_date": "20231218",
+          "source_url": "https://www.youtube.com/watch?v=R1vwnqjqMRI&pp=ygUlSGF2aXYgUmV0dGlnIEd1ciBwb2RjYXN0cyBhbmQgY2xhc3Nlcw%3D%3D",
+          "duration_label": "23:11"
+        },
+        {
+          "episode_id": "evKbREUqrsg",
+          "title": "Episode 63: New York in the age of Tucker and Mamdani, with Noam Dworman",
+          "episode_number": 63,
+          "publish_date": "20251125",
+          "source_url": "https://www.youtube.com/watch?v=evKbREUqrsg",
+          "duration_label": "55:56"
+        },
+        {
+          "episode_id": "3HQtAEXSOXk",
+          "title": "Episode 61: Is criticizing Israel antisemitic?",
+          "episode_number": 61,
+          "publish_date": "20251119",
+          "source_url": "https://www.youtube.com/watch?v=3HQtAEXSOXk",
+          "duration_label": "10:53"
+        }
+      ]
+    }
+  ]
+}

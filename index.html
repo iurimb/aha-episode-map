@@ -180,6 +180,11 @@
             margin-bottom: 4px;
         }
 
+        .trail-button.active {
+            background: rgba(56, 189, 248, 0.18);
+            border-color: rgba(56, 189, 248, 0.45);
+        }
+
         .trail-button span,
         .category-button span,
         .result-card span,
@@ -259,10 +264,23 @@
             left: 18px;
             right: 18px;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: space-between;
             gap: 12px;
             pointer-events: none;
+        }
+
+        .map-topbar-left {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            max-width: 560px;
+            min-width: 0;
+        }
+
+        .map-topbar-left > * {
+            pointer-events: auto;
         }
 
         .glass {
@@ -317,6 +335,12 @@
 
         .timeline-map-tools[hidden] {
             display: none !important;
+        }
+
+        #timeline-hover-hint {
+            color: var(--muted);
+            font-size: 0.76rem;
+            padding: 0 4px;
         }
 
         .timeline-tool-btn {
@@ -488,14 +512,9 @@
         }
 
         .map-lane-controls {
-            position: absolute;
-            z-index: 3;
-            left: 18px;
-            top: 106px;
             display: flex;
             flex-direction: column;
             gap: 8px;
-            pointer-events: auto;
         }
 
         .map-lane-controls[hidden] {
@@ -985,7 +1004,7 @@
         <aside class="left-rail">
             <div class="brand-eyebrow">Ask Haviv Anything</div>
             <h1>Episode Map</h1>
-            <p style="margin-top:12px;">Browse the corpus by category and date. Click a category card to open its trail; use Find Episode to jump to a title.</p>
+            <p style="margin-top:12px;">Browse by category and date, or open a study collection of recommended episodes.</p>
 
             <div class="stats">
                 <div class="stat-card">
@@ -997,6 +1016,15 @@
                     <span>categories</span>
                 </div>
             </div>
+
+            <section class="section">
+                <div class="section-header">
+                    <h2>Study collections</h2>
+                    <span class="chip">recommended</span>
+                </div>
+                <p class="micro">Curated sets — not a required order. Click one to highlight those episodes on the map.</p>
+                <div class="trail-grid" id="study-collections"></div>
+            </section>
 
             <section class="section">
                 <div class="section-header">
@@ -1016,7 +1044,7 @@
                     <span class="chip" id="result-count">0 results</span>
                 </div>
                 <div class="result-list" id="search-results">
-                    <p class="micro">Find an episode by title, or click a category on the map.</p>
+                    <p class="micro">Pick a study collection, find an episode by title, or click a category on the map.</p>
                 </div>
             </section>
 
@@ -1024,9 +1052,17 @@
 
         <section class="map-stage" aria-label="Episode map">
             <div class="map-topbar">
+                <div class="map-topbar-left">
                 <div class="glass map-title">
                     <strong id="map-heading">God's Eye View</strong>
                     <p id="map-subtitle" class="micro">Episodes are laid out by category and chronology. Scroll to zoom, drag to pan, hover for a snap tooltip, click to deep dive.</p>
+                </div>
+                <div id="map-lane-controls" class="map-lane-controls">
+                    <div class="map-lane-toggle" role="group" aria-label="Trail visibility controls">
+                        <button type="button" id="show-all-trails-button" class="map-lane-btn">Show all trails</button>
+                        <button type="button" id="collapse-all-trails-button" class="map-lane-btn active">Collapse all trails</button>
+                    </div>
+                </div>
                 </div>
                 <div class="glass map-actions">
                     <div class="map-actions-primary">
@@ -1035,7 +1071,7 @@
                             <button type="button" id="map-view-timeline" class="map-view-btn">Time × categories</button>
                         </div>
                         <div id="timeline-map-tools" class="timeline-map-tools" hidden>
-                            <button type="button" id="timeline-labels-toggle" class="timeline-tool-btn active" title="Show or hide episode labels on the timeline map">Labels on</button>
+                            <span class="micro" id="timeline-hover-hint">Hover a ball to read the episode title</span>
                             <button type="button" id="timeline-zoom-region-toggle" class="timeline-tool-btn" title="Drag on the map to zoom into a time/category rectangle">Zoom region</button>
                         </div>
                     </div>
@@ -1044,16 +1080,6 @@
                         <button id="zoom-out-button">Zoom out</button>
                         <button id="reset-map-button">Reset map</button>
                     </div>
-                </div>
-            </div>
-            <div id="map-lane-controls" class="map-lane-controls">
-                <div class="map-lane-toggle" role="group" aria-label="Trail visibility controls">
-                    <button type="button" id="show-all-trails-button" class="map-lane-btn">Show all trails</button>
-                    <button type="button" id="collapse-all-trails-button" class="map-lane-btn active">Collapse all trails</button>
-                </div>
-                <div class="map-lane-toggle" role="group" aria-label="Category membership controls">
-                    <button type="button" id="show-primary-only-button" class="map-lane-btn active">Show only primary</button>
-                    <button type="button" id="show-all-category-episodes-button" class="map-lane-btn">Show all eps with category</button>
                 </div>
             </div>
             <svg id="map-svg" role="img" aria-label="Interactive episode map">
@@ -1124,12 +1150,14 @@
             searchResults: [],
             searchKind: "",
             activeQuery: "",
+            collections: [],
+            activeCollectionId: "",
             mapViewMode: MAP_VIEW_COLUMNS,
             mapTrailsExpanded: false,
             /** Categories touched by current search hits — lanes stay visible when trails are collapsed (main map). */
             searchTrailCategoryIds: null,
             categoryMembershipMode: CATEGORY_MEMBERSHIP_PRIMARY,
-            timelineShowLabels: true,
+            timelineShowLabels: false,
             timelineZoomRegionMode: false,
             /** When set, timeline x-axis uses this publish-date window (ms) so a marquee drill-in spreads episodes. */
             timelineFocusRange: null,
@@ -1148,6 +1176,51 @@
             dragging: false,
             dragStart: null,
         };
+
+        function showsOrderedTrail() {
+            return state.searchKind === "topic";
+        }
+
+        function syncCollectionButtons() {
+            document.querySelectorAll("#study-collections .trail-button").forEach((button) => {
+                button.classList.toggle("active", button.dataset.collectionId === state.activeCollectionId);
+            });
+        }
+
+        function renderCollections() {
+            const container = document.getElementById("study-collections");
+            if (!container) return;
+            container.innerHTML = "";
+            if (!state.collections.length) {
+                container.innerHTML = '<p class="micro">No study collections exported yet.</p>';
+                return;
+            }
+            state.collections.forEach((collection) => {
+                const button = document.createElement("button");
+                button.className = "trail-button";
+                button.type = "button";
+                button.dataset.collectionId = collection.id;
+                const count = (collection.episodes || []).length;
+                button.innerHTML = `<strong>${escapeHtml(collection.title)}</strong><span>${count} episode${count === 1 ? "" : "s"}${collection.note ? ` · ${escapeHtml(collection.note)}` : ""}</span>`;
+                button.addEventListener("click", () => openCollection(collection));
+                container.appendChild(button);
+            });
+            syncCollectionButtons();
+        }
+
+        function openCollection(collection) {
+            state.categoryBrowseId = null;
+            state.searchKind = "collection";
+            state.activeCollectionId = collection.id;
+            state.activeQuery = collection.title;
+            document.getElementById("episode-search-query").value = "";
+            state.searchResults = (collection.episodes || []).map((episode) => hydrateEpisodeForDisplay(episode));
+            state.searchEpisodeIds = state.searchResults.map((episode) => String(episode.episode_id));
+            refreshSearchTrailCategoryIds();
+            renderAll();
+            syncCollectionButtons();
+            if (state.searchResults.length) renderTrailOverview();
+        }
 
         function escapeHtml(value) {
             return String(value ?? "").replace(/[&<>"']/g, (char) => ({
@@ -1239,7 +1312,7 @@
         }
 
         function effectiveCategoryMembershipMode() {
-            return state.mapViewMode === MAP_VIEW_TIMELINE ? CATEGORY_MEMBERSHIP_PRIMARY : state.categoryMembershipMode;
+            return CATEGORY_MEMBERSHIP_PRIMARY;
         }
 
         function episodeBelongsToCategory(episode, categoryId) {
@@ -1919,12 +1992,7 @@
             const wrap = document.getElementById("timeline-map-tools");
             const svg = document.getElementById("map-svg");
             if (wrap) wrap.hidden = state.mapViewMode !== MAP_VIEW_TIMELINE;
-            const lbl = document.getElementById("timeline-labels-toggle");
             const zm = document.getElementById("timeline-zoom-region-toggle");
-            if (lbl) {
-                lbl.textContent = state.timelineShowLabels ? "Labels on" : "Labels off";
-                lbl.classList.toggle("active", state.timelineShowLabels);
-            }
             if (zm) zm.classList.toggle("active", state.timelineZoomRegionMode);
             if (svg) {
                 svg.classList.toggle(
@@ -2204,12 +2272,8 @@
             controls.hidden = state.mapViewMode !== MAP_VIEW_COLUMNS;
             const showAll = document.getElementById("show-all-trails-button");
             const collapseAll = document.getElementById("collapse-all-trails-button");
-            const primaryOnly = document.getElementById("show-primary-only-button");
-            const showAllMembership = document.getElementById("show-all-category-episodes-button");
             if (showAll) showAll.classList.toggle("active", state.mapTrailsExpanded);
             if (collapseAll) collapseAll.classList.toggle("active", !state.mapTrailsExpanded);
-            if (primaryOnly) primaryOnly.classList.toggle("active", state.categoryMembershipMode === CATEGORY_MEMBERSHIP_PRIMARY);
-            if (showAllMembership) showAllMembership.classList.toggle("active", state.categoryMembershipMode === CATEGORY_MEMBERSHIP_ALL);
         }
 
         function renderMap() {
@@ -2239,7 +2303,7 @@
                 const pos = layoutKey ? state.layout.get(layoutKey) : null;
                 if (pos) visibleTrailPoints.push(pos);
             });
-            if (state.searchKind !== "episode") {
+            if (showsOrderedTrail()) {
                 for (let i = 0; i < visibleTrailPoints.length - 1; i++) {
                     const a = visibleTrailPoints[i];
                     const b = visibleTrailPoints[i + 1];
@@ -2276,7 +2340,7 @@
                 group.appendChild(createSvg("circle", { r: radius + 8, class: "node-ring" }));
                 group.appendChild(createSvg("circle", { r: radius, class: "node-core", fill: pos.color }));
                 group.appendChild(createSvg("circle", { cx: -7, cy: -8, r: Math.max(5, radius * 0.34), fill: "url(#nodeGloss)", opacity: "0.65" }));
-                const hideTimelineLabels = layoutInfo.view === MAP_VIEW_TIMELINE && !state.timelineShowLabels;
+                const hideTimelineLabels = layoutInfo.view === MAP_VIEW_TIMELINE;
                 if (!hideTimelineLabels) {
                     const labelX = radius + 10;
                     const numLine = createSvg("text", { x: labelX, y: -8, class: "episode-label-num" });
@@ -2299,7 +2363,7 @@
                 }
 
                 const trailOrder = searchSet.has(id) ? state.searchEpisodeIds.indexOf(id) : -1;
-                if (trailOrder >= 0 && state.searchKind !== "episode") {
+                if (trailOrder >= 0 && showsOrderedTrail()) {
                     const badgeGroup = createSvg("g", {
                         transform: `translate(0 ${-(radius + 16)})`,
                         class: "search-trail-order",
@@ -2336,7 +2400,9 @@
             });
 
             document.getElementById("map-heading").textContent = state.activeQuery
-                ? (state.searchKind === "episode" ? `Title: ${state.activeQuery}` : `Trail: ${state.activeQuery}`)
+                ? (state.searchKind === "collection"
+                    ? state.activeQuery
+                    : (state.searchKind === "episode" ? `Title: ${state.activeQuery}` : `Trail: ${state.activeQuery}`))
                 : "God's Eye View";
             const scoped = state.selectedCategoryId === ALL_CATEGORIES_ID
                 ? state.episodes.length
@@ -2344,7 +2410,9 @@
             const trailCount = state.searchEpisodeIds.length;
             let mapSubtitle;
             if (state.activeQuery) {
-                if (state.searchKind === "episode") {
+                if (state.searchKind === "collection") {
+                    mapSubtitle = `${trailCount} recommended episode${trailCount === 1 ? "" : "s"} highlighted. Not a required order — click any of them.`;
+                } else if (state.searchKind === "episode") {
                     if (trailCount <= 1) {
                         mapSubtitle = `${trailCount} episode title match on the map. Click the node or result card to open it.`;
                     } else {
@@ -2376,14 +2444,13 @@
                     mapSubtitle = `Focused window ${formatTimelineTick(t0, focusRange)} → ${formatTimelineTick(
                         t1,
                         focusRange,
-                    )} (${focusedCount} episodes in scope). Turn Zoom region on to narrow again. Reset map for the full timeline.`;
+                    )} (${focusedCount} episodes in scope). Hover a ball to read the title. Turn Zoom region on to narrow again. Reset map for the full timeline.`;
                 } else {
-                    mapSubtitle = `${scoped} episodes shown. Time runs horizontally by publish date; each band is one category. Click a category card to open or collapse that lane's thumbnail trail on the right. With Zoom region on, drag a rectangle to narrow the window.`;
+                    mapSubtitle = `${scoped} episodes shown as dots. Time runs left to right by publish date; each band is one category. Hover a ball to read which episode it is; click to open it. Click a category card for that lane's trail. With Zoom region on, drag a rectangle to narrow the window.`;
                 }
             } else {
-                const membershipText = state.categoryMembershipMode === CATEGORY_MEMBERSHIP_PRIMARY ? "primary lanes only" : "all category memberships";
                 const laneText = state.mapTrailsExpanded ? "All trails expanded." : (state.categoryBrowseId ? "Single trail expanded." : "Trails collapsed by default.");
-                mapSubtitle = `${scoped} episodes in scope (${membershipText}). ${laneText} Click a category card to open or collapse its trail overview.`;
+                mapSubtitle = `${scoped} episodes in scope. ${laneText} Click a category card to open or collapse its trail overview.`;
             }
             document.getElementById("map-subtitle").textContent = mapSubtitle;
             syncMapViewButtons();
@@ -2397,7 +2464,7 @@
             count.textContent = `${state.searchResults.length} results`;
             container.innerHTML = "";
             if (!state.searchResults.length) {
-                container.innerHTML = '<p class="micro">Find an episode by title, or click a category on the map.</p>';
+                container.innerHTML = '<p class="micro">Pick a study collection, find an episode by title, or click a category on the map.</p>';
                 return;
             }
             state.searchResults.forEach((episode, index) => {
@@ -2407,7 +2474,7 @@
                 const moments = state.searchKind === "topic" ? (displayEpisode.matching_moments || []).slice(0, 2) : [];
                 card.innerHTML = `
                     <strong>${index + 1}. ${escapeHtml(episodeNumberLabel(displayEpisode))}: ${escapeHtml(cleanTitle(displayEpisode))}</strong>
-                    <span>${escapeHtml(categoryNameById(primaryCategoryId(displayEpisode)))} · ${escapeHtml(formatPublishDate(displayEpisode.publish_date))}</span>
+                    <span>${escapeHtml(categoryNameById(primaryCategoryId(displayEpisode)))} · ${escapeHtml(formatPublishDate(displayEpisode.publish_date))}${displayEpisode.duration_label ? ` · ${escapeHtml(displayEpisode.duration_label)}` : ""}</span>
                     ${moments.map((moment) => `<span style="margin-top:8px;">${escapeHtml(moment.start_label || "")}: ${escapeHtml(String(moment.text || "").slice(0, 150))}${String(moment.text || "").length > 150 ? "..." : ""}</span>`).join("")}
                 `;
                 card.addEventListener("click", () => openEpisode(displayEpisode.episode_id, displayEpisode));
@@ -2439,6 +2506,8 @@
             const micro =
                 state.categoryBrowseId
                     ? `${episodes.length} episode${episodes.length === 1 ? "" : "s"} in this lane (${membershipLabel}), oldest → newest by publish date. Click a card for full detail.`
+                    : state.searchKind === "collection"
+                        ? `${state.searchResults.length} recommended episode${state.searchResults.length === 1 ? "" : "s"} in this collection. Not a required order.`
                     : state.searchKind === "episode"
                         ? `${state.searchResults.length} title match${state.searchResults.length === 1 ? "" : "es"} for "${escapeHtml(state.activeQuery)}". Click one to open full detail.`
                         : `Search picked ${state.searchResults.length} episodes. Click one to open full detail.`;
@@ -2591,11 +2660,13 @@
             if (!query) return;
             state.categoryBrowseId = null;
             state.searchKind = "episode";
+            state.activeCollectionId = "";
             state.activeQuery = query;
             state.searchResults = filterEpisodesByTitle(state.episodes, query);
             state.searchEpisodeIds = state.searchResults.map((episode) => String(episode.episode_id));
             refreshSearchTrailCategoryIds();
             renderAll();
+            syncCollectionButtons();
             if (state.searchResults.length) {
                 renderTrailOverview();
             } else {
@@ -2619,6 +2690,17 @@
             state.episodeById = new Map(state.episodes.map((episode) => [String(episode.episode_id), episode]));
             const countEl = document.getElementById("stat-episode-count");
             if (countEl) countEl.textContent = String(state.episodes.length);
+        }
+
+        async function loadRoadmaps() {
+            try {
+                const response = await fetch("data/roadmaps.json");
+                const data = await response.json();
+                state.collections = data.collections || [];
+            } catch (_) {
+                state.collections = [];
+            }
+            renderCollections();
         }
 
         function wireMapInteractions() {
@@ -2706,7 +2788,7 @@
 
         async function bootstrap() {
             wireMapInteractions();
-            await Promise.all([loadCategories(), loadCatalog()]);
+            await Promise.all([loadCategories(), loadCatalog(), loadRoadmaps()]);
             renderAll();
             resetMap();
         }
@@ -2741,25 +2823,6 @@
             state.categoryBrowseId = null;
             renderMap();
         });
-        document.getElementById("show-primary-only-button").addEventListener("click", () => {
-            if (state.categoryMembershipMode === CATEGORY_MEMBERSHIP_PRIMARY) return;
-            state.categoryMembershipMode = CATEGORY_MEMBERSHIP_PRIMARY;
-            renderAll();
-            resetMap();
-            if (state.categoryBrowseId) renderTrailOverview();
-        });
-        document.getElementById("show-all-category-episodes-button").addEventListener("click", () => {
-            if (state.categoryMembershipMode === CATEGORY_MEMBERSHIP_ALL) return;
-            state.categoryMembershipMode = CATEGORY_MEMBERSHIP_ALL;
-            renderAll();
-            resetMap();
-            if (state.categoryBrowseId) renderTrailOverview();
-        });
-        document.getElementById("timeline-labels-toggle").addEventListener("click", () => {
-            state.timelineShowLabels = !state.timelineShowLabels;
-            syncTimelineMapTools();
-            renderMap();
-        });
         document.getElementById("timeline-zoom-region-toggle").addEventListener("click", () => {
             state.timelineZoomRegionMode = !state.timelineZoomRegionMode;
             if (!state.timelineZoomRegionMode) state.timelineFocusRange = null;
@@ -2781,6 +2844,7 @@
             state.searchEpisodeIds = [];
             state.searchResults = [];
             state.searchKind = "";
+            state.activeCollectionId = "";
             state.searchTrailCategoryIds = null;
             state.categoryBrowseId = null;
             state.mapTrailsExpanded = false;
@@ -2790,6 +2854,7 @@
             document.getElementById("episode-search-query").value = "";
             document.getElementById("detail-panel").classList.remove("open");
             renderAll();
+            syncCollectionButtons();
             resetMap();
         });
         document.getElementById("close-detail-button").addEventListener("click", () => {
